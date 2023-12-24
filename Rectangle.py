@@ -2,7 +2,7 @@ import Point
 import numpy as np
 
 
-class Rectangle:
+class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizualizacji czy cos
     def __init__(self, point1: Point, point2: Point) -> None:
         self.lowerLeft = point1.lowerLeft(point2)
         self.upperRight = point1.upperRight(point2)
