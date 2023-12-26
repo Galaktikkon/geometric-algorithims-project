@@ -1,5 +1,4 @@
-import Point
-import numpy as np
+from Point import Point
 
 
 class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizualizacji czy cos
@@ -9,9 +8,12 @@ class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizua
         self.dim = point1.dim
 
     def __str__(self):
-        return self.lowerLeft + ' - ' + self.upperRight
+        return str(self.lowerLeft) + ' - ' + str(self.upperRight)
 
-    def contains(self, point: Point):
+    def intersects(self, other):
+        return self.lowerLeft.precedes(other.upperRight) and self.upperRight.follows(other.lowerLeft)
+
+    def containsPoint(self, point: Point):
         return point.follows(self.lowerLeft) and point.precedes(self.upperRight)
 
     def draw(self, ax, c='k', lw=1, **kwargs):
@@ -19,3 +21,18 @@ class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizua
         x2, y2 = self.upperRight.x(), self.upperRight.y()
         ax.plot([x1, x2, x2, x1, x1],
                 [y1, y1, y2, y2, y1], c=c, lw=lw, **kwargs)
+
+    def containsRect(self, other):
+        return other.lowerLeft.follows(self.lowerLeft) and other.upperRight.precedes(self.upperRight)
+
+    def divideRectIntoTwo(self, dim, divLine):
+        Lower = self.lowerLeft.data
+        Upper = self.upperRight.data
+        assert divLine <= Upper[dim] or divLine >= Lower[dim], 'Line does not belong to rectangle'
+        lowerIntersection, upperIntersection = list(
+            Lower), list(Upper)
+        lowerIntersection[dim] = upperIntersection[dim] = divLine
+        lowerIntersection, upperIntersection = tuple(
+            lowerIntersection), tuple(upperIntersection)
+        return (Rectangle(Point(Lower), Point(upperIntersection)), Rectangle(Point(lowerIntersection), Point(Upper)))
+

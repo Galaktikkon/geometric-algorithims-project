@@ -3,10 +3,10 @@ import random
 
 def rand_partition(points, p, r, dim=0):
     def partition(points, p, r):
-        x = points[r].data[dim]
+        x = points[r].get_dim(dim)
         i = p-1
         for j in range(p, r):
-            if points[j].data[dim] <= x:
+            if points[j].get_dim(dim) <= x:
                 i += 1
                 points[j], points[i] = points[i], points[j]
         i += 1

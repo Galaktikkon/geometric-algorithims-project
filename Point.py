@@ -3,7 +3,7 @@ import numpy as np
 
 class Point:
     def __init__(self, data: tuple) -> None:
-        self.data = data  # krotka wspolrzednych
+        self.data = data
         self.dim = len(self.data)
 
     def __eq__(self, other: object) -> bool:
@@ -36,14 +36,14 @@ class Point:
             other, Point), 'Object has to be an instance of Point class'
         assert self.dim == other.dim, 'Points have different number of dimensions'
         assert self.dim > dim, 'Points have too few dimensions'
-        return self.data[dim] >= other.data[dim]
+        return self.get_dim(dim) >= other.get_dim(dim)
 
     def precedes(self, other) -> bool:
         assert isinstance(
             other, Point), 'Object has to be an instance of Point class'
         assert self.dim == other.dim, 'Points have different number of dimensions'
         for i in range(self.dim):
-            if self.data[i] > other.data[i]:
+            if self.get_dim(i) > other.get_dim(i):
                 return False
         return True
 
@@ -52,7 +52,7 @@ class Point:
             other, Point), 'Object has to be an instance of Point class'
         assert self.dim == other.dim, 'Points have different number of dimensions'
         for i in range(self.dim):
-            if self.data[i] < other.data[i]:
+            if self.get_dim(i) < other.get_dim(i):
                 return False
         return True
 
@@ -63,7 +63,8 @@ class Point:
         arr = [0 for _ in range(self.dim)]
         for i in range(self.dim):
             arr[i] = min(self.get_dim(i), other.get_dim(i))
-        return Point(arr)
+        return Point(tuple(arr))
+
 
     def upperRight(self, other):
         assert isinstance(
@@ -72,4 +73,10 @@ class Point:
         arr = [0 for _ in range(self.dim)]
         for i in range(self.dim):
             arr[i] = max(self.get_dim(i), other.get_dim(i))
-        return Point(arr)
+        return Point(tuple(arr))
+
+
+def createPointList(points):
+    points = list(set(points))
+    res = [Point(cord) for cord in points]
+    return res
