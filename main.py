@@ -1,11 +1,15 @@
 import random
 from kd_Tree import kdTree
 from Point import Point
-A = [(random.randint(10, 99), random.randint(10, 99)) for _ in range(12)]
-points = [Point(cord) for cord in A]
-for point in points:
-    print(point, end=' ')
-print()
+from Point import createPointList
+from Rectangle import Rectangle
+A = [(random.randint(0, 100), random.randint(0, 100)) for _ in range(18)]
+points = createPointList(A)
+
 tree = kdTree(points)
-tree.printTree()
-print(tree.root)
+rect = Rectangle(Point((30, 80)), Point((50, 100)))
+res = tree.searchKD(rect)
+print(str(tree))
+print("\n\n")
+print(res)
+print(len(res))
