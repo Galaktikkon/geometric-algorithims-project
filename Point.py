@@ -65,6 +65,7 @@ class Point:
             arr[i] = min(self.get_dim(i), other.get_dim(i))
         return Point(tuple(arr))
 
+
     def upperRight(self, other):
         assert isinstance(
             other, Point), 'Object has to be an instance of Point class'

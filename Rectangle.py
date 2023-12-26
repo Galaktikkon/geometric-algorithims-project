@@ -16,10 +16,16 @@ class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizua
     def containsPoint(self, point: Point):
         return point.follows(self.lowerLeft) and point.precedes(self.upperRight)
 
+    def draw(self, ax, c='k', lw=1, **kwargs):
+        x1, y1 = self.lowerLeft.x(), self.lowerLeft.y()
+        x2, y2 = self.upperRight.x(), self.upperRight.y()
+        ax.plot([x1, x2, x2, x1, x1],
+                [y1, y1, y2, y2, y1], c=c, lw=lw, **kwargs)
+
     def containsRect(self, other):
         return other.lowerLeft.follows(self.lowerLeft) and other.upperRight.precedes(self.upperRight)
 
-    def divideRect(self, dim, divLine):
+    def divideRectIntoTwo(self, dim, divLine):
         Lower = self.lowerLeft.data
         Upper = self.upperRight.data
         assert divLine <= Upper[dim] or divLine >= Lower[dim], 'Line does not belong to rectangle'
@@ -29,3 +35,4 @@ class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizua
         lowerIntersection, upperIntersection = tuple(
             lowerIntersection), tuple(upperIntersection)
         return (Rectangle(Point(Lower), Point(upperIntersection)), Rectangle(Point(lowerIntersection), Point(Upper)))
+
