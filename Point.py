@@ -62,7 +62,7 @@ class Point:
         assert self.dim == other.dim, 'Points have different number of dimensions'
         arr = [0 for _ in range(self.dim)]
         for i in range(self.dim):
-            arr[i] = min(self.get_dim[i], other.get_dim[i])
+            arr[i] = min(self.get_dim(i), other.get_dim(i))
         return Point(arr)
 
     def upperRight(self, other):
@@ -71,5 +71,5 @@ class Point:
         assert self.dim == other.dim, 'Points have different number of dimensions'
         arr = [0 for _ in range(self.dim)]
         for i in range(self.dim):
-            arr[i] = max(self.get_dim[i], other.get_dim[i])
+            arr[i] = max(self.get_dim(i), other.get_dim(i))
         return Point(arr)
