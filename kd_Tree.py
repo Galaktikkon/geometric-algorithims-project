@@ -156,10 +156,10 @@ class kdTree:
         return s
 
     def drawTree(self, ax):
-        def draw(root, ax):
+        def draw(root, ax, lw):
             if not isinstance(root, Point):
-
-                root.rect.draw(ax)
-                draw(root.left, ax)
-                draw(root.right, ax)
-        draw(self.root, ax)
+                # print(root.axis, self.dim)
+                root.rect.drawLineInRect2D(ax, root.axis, root.dim, lw)
+                draw(root.left, ax, lw*4/5)
+                draw(root.right, ax, lw*4/5)
+        draw(self.root, ax, 2)
