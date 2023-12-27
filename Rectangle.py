@@ -35,4 +35,3 @@ class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizua
         lowerIntersection, upperIntersection = tuple(
             lowerIntersection), tuple(upperIntersection)
         return (Rectangle(Point(Lower), Point(upperIntersection)), Rectangle(Point(lowerIntersection), Point(Upper)))
-

@@ -5,12 +5,13 @@ from math import inf
 
 
 class kdNode:
-    def __init__(self, axis, dim, rect, left=None, right=None):
+    def __init__(self, axis, dim, rect, children, left=None, right=None):
         self.left = left
         self.right = right
         self.axis = axis
         self.rect = rect
         self.dim = dim
+        self.children = children
 
     def __str__(self):
         s = str(self.axis)
@@ -24,19 +25,10 @@ class kdNode:
         return str(self.axis)
 
     def allLeaves(self):
-        def allLeavesRec(root):
-            if isinstance(root, Point):
-                return [root]
-            else:
-                res = []
-                left = allLeavesRec(root.left)
-                right = allLeavesRec(root.right)
-                if left != None:
-                    res += left
-                if right != None:
-                    res += right
-                return res
-        return allLeavesRec(self)
+        return self.children
+
+    def countLeaves(self):
+        return len(self.children)
 
 
 class kdTree:
@@ -46,6 +38,7 @@ class kdTree:
         assert all(
             point.dim == self.dim for point in points), 'Points must have same number of dimensions'
         self.root = self.buildTree(points)
+        self.counter = 0
 
     def __str__(self):
         return self.display()
@@ -61,8 +54,9 @@ class kdTree:
                 return points[l]
             mid = (l+r)//2
             midPoint = quickSelect(points, l, r, mid, dim)
-            newNode = kdNode(midPoint.get_dim(dim), dim, rect)
-            rectLeft, rectRight = rect.divideRect(dim, midPoint.get_dim(dim))
+            newNode = kdNode(midPoint.get_dim(dim), dim, rect, points[l:r+1])
+            rectLeft, rectRight = rect.divideRectIntoTwo(
+                dim, midPoint.get_dim(dim))
             newNode.left = buildTreeRec(
                 points, l, mid, rectLeft, (dim+1) % self.dim)
             newNode.right = buildTreeRec(
@@ -76,7 +70,9 @@ class kdTree:
         return buildTreeRec(points, 0, len(points)-1, rectStart, 0)
 
     def searchKD(self, rectangle: Rectangle):
+
         def search(p, rect: Rectangle):
+            self.counter += 1
             if isinstance(p, Point):
                 if rect.containsPoint(p):
                     return [p]
@@ -84,16 +80,26 @@ class kdTree:
                 return p.allLeaves()
             elif rectangle.intersects(p.rect):
                 res = []
-                left = search(p.left, rect)
-                right = search(p.right, rect)
-                if left != None:
-                    res += left
-                if right != None:
-                    res += right
+                res += search(p.left, rect)
+                res += search(p.right, rect)
                 return res
-            else:
-                return []
+            return []
         return search(self.root, rectangle)
+
+    def countKD(self, rectangle: Rectangle):
+        def count(p, rect: Rectangle):
+            if isinstance(p, Point):
+                if rect.containsPoint(p):
+                    return 1
+            elif rect.containsRect(p.rect):
+                return p.countLeaves()
+            elif rectangle.intersects(p.rect):
+                res = 0
+                res += count(p.left, rect)
+                res += count(p.right, rect)
+                return res
+            return 0
+        return count(self.root, rectangle)
 
     def display(self):
         def _display_aux(root: kdNode):
@@ -148,3 +154,12 @@ class kdTree:
             s += line
             s += '\n'
         return s
+
+    def drawTree(self, ax):
+        def draw(root, ax):
+            if not isinstance(root, Point):
+
+                root.rect.draw(ax)
+                draw(root.left, ax)
+                draw(root.right, ax)
+        draw(self.root, ax)
