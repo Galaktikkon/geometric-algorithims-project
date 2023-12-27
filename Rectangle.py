@@ -36,3 +36,10 @@ class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizua
             lowerIntersection), tuple(upperIntersection)
         return (Rectangle(Point(Lower), Point(upperIntersection)), Rectangle(Point(lowerIntersection), Point(Upper)))
 
+    def drawLineInRect2D(self, ax, line, dim, lw=3.0, c='k'):
+        if dim == 0:
+            y1, y2 = self.lowerLeft.y(), self.upperRight.y()
+            ax.plot([line, line], [y1, y2], c, linewidth=lw)
+        if dim == 1:
+            x1, x2 = self.lowerLeft.x(), self.upperRight.x()
+            ax.plot([x1, x2], [line, line], c, linewidth=lw)
