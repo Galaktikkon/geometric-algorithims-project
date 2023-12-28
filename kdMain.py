@@ -1,9 +1,9 @@
 import random
-from kd_Tree import kdTree
-from Point import Point
-from Point import createPointList
-from Rectangle import Rectangle
-from quadTree import quadTree
+from kdTree.kdTree import kdTree
+from geometry.Point import Point
+from geometry.Point import createPointList
+from geometry.Rectangle import Rectangle
+from quadTree.quadTree import quadTree
 import numpy as np
 import matplotlib.pyplot as plt
 

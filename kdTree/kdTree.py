@@ -1,34 +1,8 @@
-from Point import Point
+from geometry.Point import Point
 from QuickSelect import quickSelect
-from Rectangle import Rectangle
+from geometry.Rectangle import Rectangle
 from math import inf
-
-
-class kdNode:
-    def __init__(self, axis, dim, rect, children, left=None, right=None):
-        self.left = left
-        self.right = right
-        self.axis = axis
-        self.rect = rect
-        self.dim = dim
-        self.children = children
-
-    def __str__(self):
-        s = str(self.axis)
-        if self.dim == 0:
-            s += " | "
-        if self.dim == 1:
-            s += " -- "
-        return s
-
-    def __repr__(self):
-        return str(self.axis)
-
-    def allLeaves(self):
-        return self.children
-
-    def countLeaves(self):
-        return len(self.children)
+from kdTreeNode import kdTreeNode
 
 
 class kdTree:
@@ -54,7 +28,8 @@ class kdTree:
                 return points[l]
             mid = (l+r)//2
             midPoint = quickSelect(points, l, r, mid, dim)
-            newNode = kdNode(midPoint.get_dim(dim), dim, rect, points[l:r+1])
+            newNode = kdTreeNode(midPoint.get_dim(
+                dim), dim, rect, points[l:r+1])
             rectLeft, rectRight = rect.divideRectIntoTwo(
                 dim, midPoint.get_dim(dim))
             newNode.left = buildTreeRec(
@@ -102,7 +77,7 @@ class kdTree:
         return count(self.root, rectangle)
 
     def display(self):
-        def _display_aux(root: kdNode):
+        def _display_aux(root: kdTreeNode):
             """Returns list of strings, width, height, and horizontal coordinate of the root."""
             # No child.
             if isinstance(root, Point):
