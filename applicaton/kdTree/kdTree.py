@@ -1,8 +1,8 @@
 from geometry.Point import Point
-from QuickSelect import quickSelect
+from kdTree.QuickSelect import quickSelect
 from geometry.Rectangle import Rectangle
 from math import inf
-from kdTreeNode import kdTreeNode
+from kdTree.kdTreeNode import kdTreeNode
 
 
 class kdTree:
