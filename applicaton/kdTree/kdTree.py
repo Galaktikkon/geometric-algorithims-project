@@ -1,5 +1,5 @@
 from geometry.Point import Point
-from applicaton.QuickSelect import quickSelect
+from kdTree.QuickSelect import quickSelect
 from geometry.Rectangle import Rectangle
 from math import inf
 from kdTree.kdTreeNode import kdTreeNode

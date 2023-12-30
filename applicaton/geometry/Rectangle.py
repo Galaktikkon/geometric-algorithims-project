@@ -1,4 +1,4 @@
-from geometry.Point import Point
+from Point import Point
 
 
 class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizualizacji czy cos

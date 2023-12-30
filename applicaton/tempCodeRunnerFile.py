@@ -1,2 +1,1 @@
-
-canvas.get_tk_widget().pack()
+if __name__ == "__main__":
