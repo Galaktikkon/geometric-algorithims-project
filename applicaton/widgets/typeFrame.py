@@ -5,9 +5,6 @@ class typeFrame(LabelFrame):
     def __init__(self, container):
         super().__init__(container, text="select tree type")
         self.treeType = StringVar()
-        self.__addContent()
-
-    def __addContent(self):
 
         self.kdButton = Radiobutton(
             self,

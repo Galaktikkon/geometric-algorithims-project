@@ -1,6 +1,10 @@
 from tkinter import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 import matplotlib.pyplot as plt
+from matplotlib.backend_bases import MouseButton
+from geometry.Point import Point
+from geometry.Rectangle import Rectangle
+from visualiser.visualiser import Visualiser
 
 
 class Graph(Frame):
@@ -9,6 +13,7 @@ class Graph(Frame):
         self.fig, self.ax = plt.subplots(figsize=(6, 5))
 
         self.canvas = FigureCanvasTkAgg(self.fig, master=self)
+        self.canvas.draw()
         self.canvas.get_tk_widget().pack()
 
         self.toolbar = NavigationToolbar2Tk(

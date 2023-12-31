@@ -5,13 +5,11 @@ from tkinter import ttk
 
 
 class testFrame(LabelFrame):
-    def __init__(self, container, tests):
+    def __init__(self, container, tests, ax):
         super().__init__(container, text="select test case")
         self.tests: dict = tests
         self.selectedTest: str = StringVar()
-        self.__addContent()
 
-    def __addContent(self):
         testMenu = ttk.OptionMenu(
             self,
             self.selectedTest,

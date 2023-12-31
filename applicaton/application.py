@@ -14,5 +14,5 @@ class App(Tk):
     def __createWidgets(self):
         self.graph = Graph(self)
         self.graph.grid(row=0, column=1)
-        self.menu = Interface(self)
+        self.menu = Interface(self, self.graph.ax)
         self.menu.grid(row=0, column=0)

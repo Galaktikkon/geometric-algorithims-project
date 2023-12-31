@@ -10,9 +10,10 @@ import matplotlib.pyplot as plt
 
 class Interface(Frame):
 
-    def __init__(self, container):
+    def __init__(self, container, ax):
         super().__init__(container)
         self.parameters = visualisationParameters()
+        self.ax = ax
         self.__addContent()
 
     def __addContent(self):
@@ -22,11 +23,11 @@ class Interface(Frame):
         self.typeframe.grid(row=1, column=0)
 
         # Test case frame
-        self.testFrame: LabelFrame = testFrame(self, {})
+        self.testFrame: LabelFrame = testFrame(self, {}, self.ax)
         self.testFrame.grid(row=2, column=0)
 
         # Option Menu
-        self.testOptions: LabelFrame = testOptions(self)
+        self.testOptions: LabelFrame = testOptions(self, self.ax)
         self.testOptions.grid(row=3, column=0)
 
         # Start visalisation
