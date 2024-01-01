@@ -4,9 +4,8 @@ from tkinter import ttk
 
 class testName(LabelFrame):
 
-    def __init__(self, container):
+    def __init__(self, container, controller):
         super().__init__(container, text="testcase name")
 
-        self.caseName = StringVar()
-        self.nameEntry = Entry(self, textvariable=self.caseName)
+        self.nameEntry = Entry(self, textvariable=controller.testCaseName)
         self.nameEntry.pack()

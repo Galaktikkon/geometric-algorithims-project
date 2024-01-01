@@ -18,19 +18,6 @@ class rectangleOptions(LabelFrame):
             self, text='STOP', command=self.controller.stopInput)
         self.stopButton.grid(row=1, column=0, columnspan=2)
 
-        # połączenie do wizualizatora
-        self.pointA = StringVar()
-        self.pointB = StringVar()
-
-        self.labelA = LabelFrame(self, text="A")
-        self.labelA.grid(row=1, column=2)
-
-        self.labelB = LabelFrame(self, text="B")
-        self.labelB.grid(row=1, column=3)
-
-        Entry(self.labelA, textvariable=self.pointA, width=3).pack()
-        Entry(self.labelB, textvariable=self.pointB, width=3).pack()
-
         self.generateRandom = ttk.Button(
             self, text="random", command=lambda: self.controller.randomRectangle())
-        self.generateRandom.grid(row=0, column=2, columnspan=2)
+        self.generateRandom.grid(row=0, column=2, columnspan=2, rowspan=2)

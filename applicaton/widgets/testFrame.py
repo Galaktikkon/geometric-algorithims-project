@@ -1,19 +1,26 @@
 from tkinter import *
 from tkinter import ttk
-
-# dodać połączenia z I/O
+from controller.controller import Controller
 
 
 class testFrame(LabelFrame):
-    def __init__(self, container, tests, controller):
+    def __init__(self, container, controller: Controller):
         super().__init__(container, text="select test case")
-        self.tests: dict = tests
-        self.selectedTest: str = StringVar()
+
+        selectedTest = StringVar()
+
+        names = list(controller.tests.keys()) if len(
+            controller.tests.keys()) else "",
 
         testMenu = ttk.OptionMenu(
             self,
-            self.selectedTest,
-            self.tests.keys()[0] if self.tests.keys() else "",
-            list(self.tests.keys()) if len(self.tests.keys()) else ""
+            selectedTest,
+            list(controller.tests.keys())[
+                0] if controller.tests.keys() else "",
+            *names[0],
+            command=controller.loadTest
         )
+
+        controller.testMenu = testMenu
+
         testMenu.pack()

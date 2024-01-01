@@ -10,31 +10,29 @@ from math import inf
 class Visualiser():
     def __init__(self, ax):
         self.ax = ax
-        self.currentXLimits = [inf, -inf]
-        self.currentYLimits = [inf, -inf]
-        self.setLimits()
+        self.currentXLimits = [0, 10]
+        self.currentYLimits = [0, 10]
+        self.ax.set_xlim([self.currentXLimits[0], self.currentXLimits[1]])
+        self.ax.set_ylim([self.currentYLimits[0], self.currentYLimits[1]])
 
-    def setLimits(self, points=None):
-        if points:
-            for point in points:
-                self.currentXLimits[0] = min(point.x(), self.currentXLimits[0])
-                self.currentXLimits[1] = max(point.x(), self.currentXLimits[1])
-                self.currentYLimits[0] = min(point.y(), self.currentYLimits[0])
-                self.currentYLimits[1] = max(point.y(), self.currentYLimits[1])
-            self.ax.set_xlim(
-                [self.currentXLimits[0]-1, self.currentXLimits[1]+1])
-            self.ax.set_ylim(
-                [self.currentYLimits[0]-1, self.currentYLimits[1]+1])
-        else:
-            self.currentXLimits[0], self.currentYLimits[0] = 0, 0
-            self.currentXLimits[1], self.currentYLimits[1] = 10, 10
-            self.ax.set_xlim([0, 10])
-            self.ax.set_ylim([0, 10])
+    def setLimits(self, points_raw):
+
+        points = [points_raw] if isinstance(points_raw, Point) else points_raw
+
+        for point in points:
+            self.currentXLimits[0] = min(point.x(), self.currentXLimits[0])
+            self.currentXLimits[1] = max(point.x(), self.currentXLimits[1])
+            self.currentYLimits[0] = min(point.y(), self.currentYLimits[0])
+            self.currentYLimits[1] = max(point.y(), self.currentYLimits[1])
+        self.ax.set_xlim(
+            [self.currentXLimits[0]-1, self.currentXLimits[1]+1])
+        self.ax.set_ylim(
+            [self.currentYLimits[0]-1, self.currentYLimits[1]+1])
 
     def drawPoints(self, points, color="darkBlue"):
 
         if isinstance(points, Point):
-
+            self.setLimits(points)
             point = self.ax.plot(points.x(), points.y(),
                                  color=color, marker=".")[0]
             plt.draw()
@@ -58,5 +56,6 @@ class Visualiser():
 
     def clear(self):
         self.ax.cla()
-        self.setLimits()
+        self.ax.set_xlim([0, 10])
+        self.ax.set_ylim([0, 10])
         plt.draw()

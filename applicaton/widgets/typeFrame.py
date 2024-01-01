@@ -1,22 +1,22 @@
 from tkinter import *
+from controller.controller import Controller
 
 
 class typeFrame(LabelFrame):
-    def __init__(self, container):
+    def __init__(self, container, controller: Controller):
         super().__init__(container, text="select tree type")
-        self.treeType = StringVar()
 
         self.kdButton = Radiobutton(
             self,
             text="k-dimension",
-            variable=self.treeType,
+            variable=controller.treeType,
             value="kd"
         )
 
         self.quadButton = Radiobutton(
             self,
             text="quad",
-            variable=self.treeType,
+            variable=controller.treeType,
             value="quad"
         )
 

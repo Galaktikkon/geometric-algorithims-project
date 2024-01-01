@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter.messagebox import showerror
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 import matplotlib.pyplot as plt
 from matplotlib.backend_bases import MouseButton
 from geometry.Point import Point
@@ -8,7 +7,11 @@ from geometry.Rectangle import Rectangle
 from visualiser.visualiser import Visualiser
 from windows.pointsWindow import pointsWindow
 from windows.rectangleWindow import rectangleWindow
+from visualisationParameters import visualisationParameters
 import random
+import os
+import jsonpickle
+import json
 
 
 class Controller:
@@ -20,6 +23,8 @@ class Controller:
 
         self.moveBinding = None
         self.clickBinding = None
+
+        self.visualisationParameters = visualisationParameters()
 
         self.currentPoint = None
         self.points: list[Point] = []
@@ -34,6 +39,13 @@ class Controller:
         self.maxX = StringVar()
         self.maxY = StringVar()
         self.randomPointsCount = IntVar()
+
+        self.treeType = StringVar()
+        self.testCaseName = StringVar()
+        self.tests: dict = None
+
+        self.directory = self.__initializeData()
+        self.__loadData(self.directory)
 
     def startInputPoint(self):
         self.moveBinding = plt.connect(
@@ -112,18 +124,18 @@ class Controller:
                 self.currentRectangleVerticle = self.visualiser.drawPoints(
                     Point((event.xdata, event.ydata)), color='red')
 
-    def randomPoints(self):
+    def __resetRanges(self):
         self.maxX.set("")
         self.maxY.set("")
         self.minX.set("")
         self.minY.set("")
+
+    def randomPoints(self):
+        self.__resetRanges()
         window = pointsWindow(self.maxX, self.minX, self.maxY, self.minY, self)
 
     def randomRectangle(self):
-        self.maxX.set("")
-        self.maxY.set("")
-        self.minX.set("")
-        self.minY.set("")
+        self.__resetRanges()
         window = rectangleWindow(self.maxX, self.minX,
                                  self.maxY, self.minY, self)
 
@@ -166,7 +178,6 @@ class Controller:
                 if self.currentRectangle is not None:
                     self.currentRectangle.remove()
                     self.currentRectangle = None
-                    # plt.draw()
 
                 self.rectangle = Rectangle(a, b)
                 self.currentRectangle = self.visualiser.drawRectangle(
@@ -183,3 +194,59 @@ class Controller:
         self.__clearInput()
         self.points = []
         self.rectangle = None
+
+    def __loadData(self, path):
+        testFile = os.path.join(path, 'tests.json')
+        if not os.path.isfile(testFile):
+            with open(testFile, "w") as f:
+                json.dump({}, f)
+                self.tests = {}
+        else:
+            with open(testFile, "r") as f:
+                fileInput = f.read()
+                if fileInput:
+                    self.tests = jsonpickle.loads(jsonpickle.decode(fileInput))
+                else:
+                    self.tests = {}
+        f.close()
+
+    def __initializeData(self):
+        workingDirectory = os.path.abspath(os.getcwd())
+        dataDirectory = os.path.join(workingDirectory, 'data')
+        if not os.path.isdir(dataDirectory):
+            os.mkdir(dataDirectory)
+
+        return dataDirectory
+
+    def saveData(self, path):
+        self.visualisationParameters.setName(self.testCaseName.get())
+        self.visualisationParameters.setPoints(self.points)
+        self.visualisationParameters.setRectangle(self.rectangle)
+        self.visualisationParameters.setTreeType(self.treeType.get())
+
+        self.tests[self.visualisationParameters.name] = {
+            "points": self.visualisationParameters.points,
+            "rectangle": self.visualisationParameters.rectangle,
+            "treetype": self.visualisationParameters.treeType
+        }
+
+        with open(path, "w") as f:
+            json.dump(jsonpickle.encode(self.tests), f)
+        f.close()
+
+    def loadTest(self, testName):
+        if testName not in self.tests:
+            showerror("test error", "such test does not exist")
+        name = testName
+        points = self.tests[name]["points"]
+        rectangle = self.tests[name]["rectangle"]
+        treeType = self.tests[name]["treetype"]
+
+        self.visualisationParameters.setName(name)
+        self.visualisationParameters.setPoints(points)
+        self.visualisationParameters.setRectangle(rectangle)
+        self.visualisationParameters.setTreeType(treeType)
+
+        self.visualiser.clear()
+        self.visualiser.drawPoints(points)
+        self.visualiser.drawRectangle(rectangle, c='red')

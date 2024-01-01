@@ -1,4 +1,5 @@
 from geometry.Point import Point
+import jsonpickle
 
 
 class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizualizacji czy cos

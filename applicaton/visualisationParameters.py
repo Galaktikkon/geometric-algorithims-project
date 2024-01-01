@@ -1,5 +1,6 @@
 from geometry.Point import Point
-import json
+from geometry.Rectangle import Rectangle
+from tkinter.messagebox import showerror
 
 
 class visualisationParameters:
@@ -7,28 +8,29 @@ class visualisationParameters:
     def __init__(self):
         self.name: str = None
         self.treeType: str = None
+        self.rectangle: Rectangle = None
         self.points: list[Point] = None
 
-    def setName(self, name: str, names: str) -> str:
-        assert name not in names, "names are to be unique"
+    def setName(self, name: str) -> None:
         self.name = name
 
-    def setTreeType(self, treeType: str) -> str:
-        self.treeType = treeType
+    def setRectangle(self, rectangle: Rectangle) -> None:
+        if not rectangle:
+            showerror("rectangle error",
+                      "rectangle cannot be ommited as a simulation parameter")
+        else:
+            self.rectangle = rectangle
 
-    def setPoints(self, points: list[Point]) -> list[Point]:
-        assert len(points), "number of points is to be greater than 0"
-        self.points = points
+    def setTreeType(self, treeType: str) -> None:
+        if not treeType:
+            showerror("tree type error",
+                      "tree type cannot be ommited as a simulation parameter")
+        else:
+            self.treeType = treeType
 
-    def parametersToJson(self):
-        return json.dumps({
-            "name": self.Name,
-            "treeType": self.TreeType,
-            "points": self.Points
-        })
-
-    def parametersFromJson(self, jsonFile):
-        parameters = json.loads(jsonFile)
-        self.setName = parameters["name"]
-        self.treeType = parameters["treeType"]
-        self.points = parameters["points"]
+    def setPoints(self, points: list[Point]) -> None:
+        if not points:
+            showerror("points error",
+                      "set of points cannot be ommited as a simulation parameter")
+        else:
+            self.points = points
