@@ -1,6 +1,7 @@
 from tkinter import *
 from graph import Graph
 from interface import Interface
+from controller.controller import Controller
 
 
 class App(Tk):
@@ -14,5 +15,6 @@ class App(Tk):
     def __createWidgets(self):
         self.graph = Graph(self)
         self.graph.grid(row=0, column=1)
-        self.menu = Interface(self, self.graph.ax)
+        self.controller = Controller(self.graph.ax)
+        self.menu = Interface(self, self.controller)
         self.menu.grid(row=0, column=0)

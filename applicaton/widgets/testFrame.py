@@ -5,7 +5,7 @@ from tkinter import ttk
 
 
 class testFrame(LabelFrame):
-    def __init__(self, container, tests, ax):
+    def __init__(self, container, tests, controller):
         super().__init__(container, text="select test case")
         self.tests: dict = tests
         self.selectedTest: str = StringVar()

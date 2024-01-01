@@ -5,10 +5,10 @@ from controller.controller import Controller
 
 class rectangleOptions(LabelFrame):
 
-    def __init__(self, container, ax):
+    def __init__(self, container, controller: Controller):
         super().__init__(container, text="rectangle options")
 
-        self.controller = Controller(ax)
+        self.controller = controller
 
         self.enterButton = ttk.Button(
             self, text='ENTER', command=self.controller.startInputRectangle)
@@ -31,5 +31,6 @@ class rectangleOptions(LabelFrame):
         Entry(self.labelA, textvariable=self.pointA, width=3).pack()
         Entry(self.labelB, textvariable=self.pointB, width=3).pack()
 
-        self.generateRandom = ttk.Button(self, text="random")
+        self.generateRandom = ttk.Button(
+            self, text="random", command=lambda: self.controller.randomRectangle())
         self.generateRandom.grid(row=0, column=2, columnspan=2)

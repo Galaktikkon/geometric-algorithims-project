@@ -1,10 +1,13 @@
 from tkinter import *
+from tkinter.messagebox import showerror
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 import matplotlib.pyplot as plt
 from matplotlib.backend_bases import MouseButton
 from geometry.Point import Point
 from geometry.Rectangle import Rectangle
 from visualiser.visualiser import Visualiser
+from windows.pointsWindow import pointsWindow
+from windows.rectangleWindow import rectangleWindow
 import random
 
 
@@ -25,6 +28,12 @@ class Controller:
         self.currentRectangleVerticle = None
         self.currentRectangleVerticleB = None
         self.rectangleVerticle: Point = None
+
+        self.minX = StringVar()
+        self.minY = StringVar()
+        self.maxX = StringVar()
+        self.maxY = StringVar()
+        self.randomPointsCount = IntVar()
 
     def startInputPoint(self):
         self.moveBinding = plt.connect(
@@ -103,25 +112,66 @@ class Controller:
                 self.currentRectangleVerticle = self.visualiser.drawPoints(
                     Point((event.xdata, event.ydata)), color='red')
 
-    def generateRandomPoints(self, count: int, xs: tuple[float], ys: tuple[float]):
+    def randomPoints(self):
+        self.maxX.set("")
+        self.maxY.set("")
+        self.minX.set("")
+        self.minY.set("")
+        window = pointsWindow(self.maxX, self.minX, self.maxY, self.minY, self)
 
-        i = 0
+    def randomRectangle(self):
+        self.maxX.set("")
+        self.maxY.set("")
+        self.minX.set("")
+        self.minY.set("")
+        window = rectangleWindow(self.maxX, self.minX,
+                                 self.maxY, self.minY, self)
+
+    def generateRandomPoints(self):
+
+        if self.randomPointsCount is None or self.randomPointsCount.get() <= 0:
+            showerror("invalid point count",
+                      "point count should be greater than 0")
+
         points = set()
-        while i < count:
-            x = random.uniform(xs[0], xs[1])
-            y = random.uniform(ys[0], ys[1])
-            draw = Point((x, y))
-            if draw not in points:
-                points.add(draw)
+        i = 0
+        while i < self.randomPointsCount.get():
+            x = random.uniform(float(self.minX.get()), float(self.maxX.get()))
+            y = random.uniform(float(self.minY.get()), float(self.maxY.get()))
+
+            newPoint = Point((x, y))
+
+            if newPoint not in points:
+                points.add(newPoint)
                 i += 1
 
         self.points = list(points)
-
-        self.clear()
+        self.visualiser.clear()
         self.visualiser.drawPoints(self.points)
 
+        if self.rectangle is not None:
+            self.currentRectangle = self.visualiser.drawRectangle(
+                self.rectangle, c='red', lw=1.5)
+
     def generateRandomRectangle(self):
-        pass
+
+        x1 = random.uniform(float(self.minX.get()), float(self.maxX.get()))
+        y1 = random.uniform(float(self.minY.get()), float(self.maxY.get()))
+        a = Point((x1, y1))
+        while True:
+            x2 = random.uniform(float(self.minX.get()), float(self.maxX.get()))
+            y2 = random.uniform(float(self.minY.get()), float(self.maxY.get()))
+            if x2 != x1 and y2 != y1:
+                b = Point((x2, y2))
+                if self.currentRectangle is not None:
+                    self.currentRectangle.remove()
+                    self.currentRectangle = None
+                    # plt.draw()
+
+                self.rectangle = Rectangle(a, b)
+                self.currentRectangle = self.visualiser.drawRectangle(
+                    self.rectangle, c='red', lw=1.5)
+                break
 
     def stopInput(self):
         self.__clearInput()
