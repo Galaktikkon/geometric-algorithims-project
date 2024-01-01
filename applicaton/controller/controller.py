@@ -7,7 +7,7 @@ from geometry.Rectangle import Rectangle
 from visualiser.visualiser import Visualiser
 from windows.pointsWindow import pointsWindow
 from windows.rectangleWindow import rectangleWindow
-from visualisationParameters import visualisationParameters
+from controller.visualisationParameters import visualisationParameters
 import random
 import os
 import jsonpickle

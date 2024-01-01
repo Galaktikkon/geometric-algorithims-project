@@ -3,7 +3,7 @@ from tkinter import ttk
 from abc import abstractmethod, ABC
 
 
-class randomWindow(Toplevel, ABC):
+class abstractRandomWindow(Toplevel, ABC):
 
     def __init__(self, maxX, minX, maxY, minY, controller):
         super().__init__()

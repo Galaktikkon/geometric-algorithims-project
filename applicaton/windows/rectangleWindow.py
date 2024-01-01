@@ -1,9 +1,9 @@
 from tkinter import *
-from windows.randomWindow import randomWindow
+from windows.abstractRandomWIndow import abstractRandomWindow
 from tkinter.messagebox import showerror
 
 
-class rectangleWindow(randomWindow):
+class rectangleWindow(abstractRandomWindow):
 
     def __init__(self, maxX, minX, maxY, minY, controller):
         super().__init__(maxX, minX, maxY, minY, controller)

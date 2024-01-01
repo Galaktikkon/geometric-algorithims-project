@@ -1,6 +1,6 @@
 from tkinter import *
-from graph import Graph
-from interface import Interface
+from widgets.graph import Graph
+from widgets.interface import Interface
 from controller.controller import Controller
 
 

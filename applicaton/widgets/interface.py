@@ -1,10 +1,10 @@
 from tkinter import *
 from tkinter import ttk
-from visualisationParameters import visualisationParameters
+from controller.visualisationParameters import visualisationParameters
 from widgets.typeFrame import typeFrame
 from widgets.testFrame import testFrame
 from widgets.testOptions import testOptions
-from graph import Graph
+from widgets.graph import Graph
 import matplotlib.pyplot as plt
 
 
