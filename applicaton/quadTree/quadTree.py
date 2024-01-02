@@ -15,7 +15,7 @@ class quadTree:
         self.root: quadTreeNode = None
 
         if vis:
-            self.__buildTreeVis(points)
+            self.buildTreeVis(points)
         else:
             self.__buildTree(points)
 

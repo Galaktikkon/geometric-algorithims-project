@@ -4,6 +4,7 @@ from geometry.Rectangle import Rectangle
 from math import inf
 from kdTree.kdTreeNode import kdTreeNode
 from visualiser.visualiser import Visualiser
+from time import sleep
 
 
 class kdTree:
@@ -13,9 +14,8 @@ class kdTree:
         assert all(
             point.dim == self.dim for point in points), 'Points must have same number of dimensions'
         self.root = self.__buildTree(points)
-        self.counter = 0
 
-    def buildTree(self, points):
+    def __buildTree(self, points):
         def buildTreeRec(points: list[Point], l: int, r: int, rect: Rectangle, dim: int):
             if l > r:
                 return None
@@ -42,7 +42,6 @@ class kdTree:
     def search(self, rectangle: Rectangle):
 
         def searchKD(p, rect: Rectangle):
-            self.counter += 1
             if isinstance(p, Point):
                 if rect.containsPoint(p):
                     return [p]
