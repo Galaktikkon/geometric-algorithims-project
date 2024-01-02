@@ -11,10 +11,10 @@ class kdTree:
         self.dim = points[0].dim
         assert all(
             point.dim == self.dim for point in points), 'Points must have same number of dimensions'
-        self.root = self.buildTree(points)
+        self.root = self.__buildTree(points)
         self.counter = 0
 
-    def buildTree(self, points):
+    def __buildTree(self, points):
         def buildTreeRec(points: list[Point], l: int, r: int, rect: Rectangle, dim: int):
             if l > r:
                 return None

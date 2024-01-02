@@ -29,7 +29,7 @@ class visualisationWindow(Toplevel):
         self.exitButton = exitButton(self.menuFrame, self.graph, self).grid(
             row=9, column=0, pady=5)
 
-        self.tree = self.__createTree(
+        self.controller.tree = self.__createTree(
             self.controller.visualisationParameters.treeType,
             self.controller.visualisationParameters.points
         )

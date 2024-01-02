@@ -1,18 +1,23 @@
 from geometry.Rectangle import Rectangle
 from geometry.Point import Point
 from quadTree.quadTreeNode import quadTreeNode
+from visualiser.visualiser import Visualiser
+from time import sleep
 
 
 class quadTree:
 
-    def __init__(self, points: list[Point], maxPoints: int):
+    def __init__(self, points: list[Point], maxPoints: int, vis=False):
 
         assert len(points) > 0, "Quad tree cannot be empty"
 
         self.maxPoints = maxPoints
         self.root: quadTreeNode = None
 
-        self.__buildTree(points)
+        if vis:
+            self.__buildTreeVis(points)
+        else:
+            self.__buildTree(points)
 
     def draw(self, ax):
         self.root.draw(ax)
@@ -38,4 +43,27 @@ class quadTree:
             self.root.insert(point)
 
     def search(self, rect: Rectangle) -> list[Point]:
-        return set(self.root.search(rect))
+        return self.root.search(rect)
+
+    def searchVis(self, rect: Rectangle, vis: Visualiser):
+
+        vis.drawRectangle(rect, c='orange')
+        sleep(1)
+        return self.root.searchVis(rect)
+
+    def __buildTreeVis(self, points, vis: Visualiser):
+        lowerLeft, upperRight = self.__findBorders(points)
+
+        rootRectangle = Rectangle(lowerLeft, upperRight)
+
+        vis.drawRectangle(rootRectangle)
+
+        self.root = quadTreeNode(self.maxPoints, rootRectangle)
+
+        for point in points:
+            currentPoint = vis.drawPoints(point, color='purple')
+            sleep(1)
+            self.root.insertVis(point, vis, 2)
+            vis.ax.remove(currentPoint)
+            currentPoint = vis.drawPoints(point)
+            sleep(1)

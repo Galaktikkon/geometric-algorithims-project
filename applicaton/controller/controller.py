@@ -13,6 +13,7 @@ import random
 import os
 import jsonpickle
 import json
+from threading import Thread
 
 
 class Controller:
@@ -48,6 +49,9 @@ class Controller:
 
         self.directory = self.__initializeData()
         self.__loadData(self.directory)
+
+        self.thread: Thread = None
+        self.tree = None
 
     def startInputPoint(self):
         self.moveBinding = plt.connect(
@@ -268,3 +272,11 @@ class Controller:
             output = self.__createListFromPoints(self.points)
             f.write(self.testCaseName+" = "+str(output))
         f.close()
+
+    def reset(self, thread: Thread):
+        if not thread:
+            return
+        thread.join()
+
+    def showBuild(self):
+        pass
