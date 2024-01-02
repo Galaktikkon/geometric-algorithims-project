@@ -45,10 +45,16 @@ def generate_normal_distr_points(middle=0, dev=100, n=100):
 points_uniform = [generate_uniform_points(-1000, 1000, (10**3)), generate_uniform_points(-1000, 1000, 5*(10**3)),
                   generate_uniform_points(-1000, 1000, (10**4)
                                           ), generate_uniform_points(-1000, 1000, 5*(10**4)),
-                  generate_uniform_points(-1000, 1000, (10**5)), generate_uniform_points(-1000, 1000, (10**6))]
+                  generate_uniform_points(-1000, 1000, (10**5)
+                                          ), generate_uniform_points(-1000, 1000, 5*(10**5)),
+                  generate_uniform_points(-1000, 1000, (10**6))]
 
-points_normal = [generate_normal_distr_points(0, 200, 10*3), generate_normal_distr_points(
-    0, 200, 10**4), generate_normal_distr_points(0, 200, 10**5), generate_normal_distr_points(0, 200, 10**6)]
+points_normal = [generate_normal_distr_points(0, 200, 10*3), generate_normal_distr_points(0, 200, 5*10*3),
+                 generate_normal_distr_points(
+                     0, 200, 10**4), generate_normal_distr_points(0, 200, 5*10*4),
+                 generate_normal_distr_points(
+                     0, 200, 10**5), generate_normal_distr_points(0, 200, 5*10*5),
+                 generate_normal_distr_points(0, 200, 10**6)]
 
 pointsList = [[createPointList(aaa) for aaa in points_uniform], [
     createPointList(bbb) for bbb in points_normal]]
@@ -75,7 +81,7 @@ rect = Rectangle(Point((200, 200)), Point((800, 800)))
 
 
 for i in range(1):
-    for j in range(3):
+    for j in range(7):
         c = chr(j+97)
         print("Zbiór ", i+1, c, ": ", sep="", end="\n")
         kdBuildTime, tree1 = checkTimeBuild(kdTree, pointsList[i][j], True)
