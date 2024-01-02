@@ -108,25 +108,25 @@ class kdTree:
         def searchKD(p, rect: Rectangle, vis):
             if isinstance(p, Point):
                 if rect.containsPoint(p):
-                    vis.drawPoints(p, color='cyan')
+                    vis.drawPoints(p, color='cyan', markersize=7)
                     sleep(0.5)
                     return [p]
             elif rect.containsRect(p.rect):
-                rectVis = vis.drawRectangle(p.rect, c='green')
-                sleep(0.5)
-                vis.drawPoints(p.allLeaves, color='cyan')
+                rectVis = vis.drawRectangle(p.rect, c='green', lw=2)
+                res = p.allLeaves()
+                vis.drawPoints(res, color='cyan', markersize=7)
                 sleep(0.5)
                 rectVis.remove()
                 sleep(0.5)
-                return p.allLeaves()
+                return res
             elif rectangle.intersects(p.rect):
-                rectVis = vis.drawRectangle(p.rect, c='brown')
+                rectVis = vis.drawRectangle(p.rect, c='brown', lw=2)
+                sleep(0.5)
+                rectVis.remove()
                 sleep(0.5)
                 res = []
                 res += searchKD(p.left, rect, vis)
                 res += searchKD(p.right, rect, vis)
-                rectVis.remove()
-                sleep(0.5)
                 return res
             return []
         return searchKD(self.root, rectangle, vis)
