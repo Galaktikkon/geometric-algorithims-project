@@ -38,4 +38,4 @@ class quadTree:
             self.root.insert(point)
 
     def search(self, rect: Rectangle) -> list[Point]:
-        return self.root.search(rect)
+        return set(self.root.search(rect))

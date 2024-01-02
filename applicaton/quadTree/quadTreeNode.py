@@ -65,19 +65,22 @@ class quadTreeNode:
     def search(self, rect: Rectangle) -> set[Point]:
 
         if not rect.intersects(self.boundary):
-            return set()
+            return []
 
         if rect.containsRect(self.boundary):
-            return set(self.points)
+            return self.points
 
+        output = []
         if rect.intersects(self.boundary):
             if self.isLeaf:
-                return set(filter(lambda point: rect.containsPoint(point),  self.points))
+                return list(filter(lambda point: rect.containsPoint(point),  self.points))
             else:
-                return self.northWest.search(rect) | \
-                    self.northEast.search(rect) | \
-                    self.southWest.search(rect) | \
-                    self.southEast.search(rect)
+                output.extend(self.northWest.search(rect))
+                output.extend(self.northEast.search(rect))
+                output.extend(self.southWest.search(rect))
+                output.extend(self.southEast.search(rect))
+
+        return output
 
     def draw(self, ax, lw=2):
         self.boundary.draw(ax, lw=lw)
