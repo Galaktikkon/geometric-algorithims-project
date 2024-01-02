@@ -58,6 +58,14 @@ class Visualiser():
         plt.draw()
         return rect
 
+    def drawLineInRect2D(self, rect, line, dim, lw=3.0, c='k'):
+        if dim == 0:
+            y1, y2 = rect.lowerLeft.y(), rect.upperRight.y()
+            self.ax.plot([line, line], [y1, y2], c, linewidth=lw)
+        if dim == 1:
+            x1, x2 = rect.lowerLeft.x(), rect.upperRight.x()
+            self.ax.plot([x1, x2], [line, line], c, linewidth=lw)
+
     def drawBuild(self, tree, points: list[Point], rectangle: Rectangle):
         foundPoints = tree.search(rectangle)
         tree.draw(self.ax)
