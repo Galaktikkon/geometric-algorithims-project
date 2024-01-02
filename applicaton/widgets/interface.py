@@ -5,6 +5,8 @@ from widgets.typeFrame import typeFrame
 from widgets.testFrame import testFrame
 from widgets.testOptions import testOptions
 from widgets.graph import Graph
+from widgets.exitButton import exitButton
+from windows.visualisationWindow import visualisationWindow
 import matplotlib.pyplot as plt
 
 
@@ -38,20 +40,9 @@ class Interface(Frame):
         self.startButton.grid(row=4, column=0)
 
         # Exit App
-        self.exitButton: ttk.Button = ttk.Button(
-            self, text="EXIT", command=lambda window=self.container, graph=self.graph: self.closeWindow(window, graph))
+        self.exitButton: ttk.Button = exitButton(
+            self, self.graph, self.container)
         self.exitButton.grid(row=5, pady=10)
 
-    # dodać sprawdzanie poprawności jak bedzie czas i zamykanie rzeczy
     def startVisualisation(self):
-        top = Toplevel()
-        graph = Graph(top)
-        graph.grid(row=0, column=0)
-        ttk.Button(master=top, text="CLOSE",
-                   command=lambda window=top, graph=graph: self.closeWindow(window, graph)).grid(row=1, column=0)
-
-        # dodać guzik do gifa i cacy
-
-    def closeWindow(self, window, graph: Graph):
-        plt.close(graph.fig)
-        window.destroy()
+        visualisationWindow(self.controller.visualisationParameters)

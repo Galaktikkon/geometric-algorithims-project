@@ -23,7 +23,7 @@ class pointOptions(LabelFrame):
         self.controller.randomPointsCount.set(25)
 
         self.SpinBox = ttk.Spinbox(
-            self, from_=1, to=10 ** 6, textvariable=self.controller.randomPointsCount, wrap=True, width=4)
+            self, from_=1, to=10 ** 6, textvariable=self.controller.randomPointsCount, wrap=True, width=6)
         self.SpinBox.grid(row=1, column=2, columnspan=2)
 
         self.generateRandom = ttk.Button(

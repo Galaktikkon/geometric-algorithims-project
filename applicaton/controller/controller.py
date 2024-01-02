@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter.messagebox import showerror
+from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backend_bases import MouseButton
 from geometry.Point import Point
@@ -40,6 +41,7 @@ class Controller:
         self.maxY = StringVar()
         self.randomPointsCount = IntVar()
 
+        self.testMenu = None
         self.treeType = StringVar()
         self.testCaseName = StringVar()
         self.tests: dict = None
@@ -199,7 +201,7 @@ class Controller:
         testFile = os.path.join(path, 'tests.json')
         if not os.path.isfile(testFile):
             with open(testFile, "w") as f:
-                json.dump({}, f)
+                json.dump({}, f, indent=4)
                 self.tests = {}
         else:
             with open(testFile, "r") as f:
@@ -222,17 +224,18 @@ class Controller:
         self.visualisationParameters.setName(self.testCaseName.get())
         self.visualisationParameters.setPoints(self.points)
         self.visualisationParameters.setRectangle(self.rectangle)
-        self.visualisationParameters.setTreeType(self.treeType.get())
 
         self.tests[self.visualisationParameters.name] = {
             "points": self.visualisationParameters.points,
             "rectangle": self.visualisationParameters.rectangle,
-            "treetype": self.visualisationParameters.treeType
         }
 
         with open(path, "w") as f:
-            json.dump(jsonpickle.encode(self.tests), f)
+            json.dump(jsonpickle.encode(self.tests), f, indent=4)
         f.close()
+
+        self.testMenu.set_menu(list(self.tests.keys())[0],
+                               *list(self.tests.keys()))
 
     def loadTest(self, testName):
         if testName not in self.tests:
@@ -240,12 +243,10 @@ class Controller:
         name = testName
         points = self.tests[name]["points"]
         rectangle = self.tests[name]["rectangle"]
-        treeType = self.tests[name]["treetype"]
 
         self.visualisationParameters.setName(name)
         self.visualisationParameters.setPoints(points)
         self.visualisationParameters.setRectangle(rectangle)
-        self.visualisationParameters.setTreeType(treeType)
 
         self.visualiser.clear()
         self.visualiser.drawPoints(points)

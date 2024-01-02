@@ -8,7 +8,6 @@ class testFrame(LabelFrame):
         super().__init__(container, text="select test case")
 
         selectedTest = StringVar()
-
         names = list(controller.tests.keys()) if len(
             controller.tests.keys()) else "",
 

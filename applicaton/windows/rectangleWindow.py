@@ -1,5 +1,5 @@
 from tkinter import *
-from windows.abstractRandomWIndow import abstractRandomWindow
+from windows.abstractRandomWindow import abstractRandomWindow
 from tkinter.messagebox import showerror
 
 
