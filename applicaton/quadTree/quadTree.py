@@ -19,8 +19,8 @@ class quadTree:
         else:
             self.__buildTree(points)
 
-    def draw(self, ax):
-        self.root.draw(ax)
+    def draw(self, vis: Visualiser):
+        self.root.draw(vis)
 
     def __findBorders(self, points) -> tuple[Point]:
         lowerLeft: Point = points[0]

@@ -182,10 +182,10 @@ class quadTreeNode:
 
         return output
 
-    def draw(self, ax, lw=2):
-        self.boundary.draw(ax, lw=lw)
+    def draw(self, vis: Visualiser, lw=2):
+        vis.drawRectangle(self.boundary, lw=lw)
         if not self.isLeaf:
-            self.northWest.draw(ax, lw=lw*4/5)
-            self.northEast.draw(ax, lw=lw*4/5)
-            self.southWest.draw(ax, lw=lw*4/5)
-            self.southEast.draw(ax, lw=lw*4/5)
+            self.northWest.draw(vis, lw=lw*4/5)
+            self.northEast.draw(vis, lw=lw*4/5)
+            self.southWest.draw(vis, lw=lw*4/5)
+            self.southEast.draw(vis, lw=lw*4/5)
