@@ -287,6 +287,8 @@ class Controller:
 
     def showSearch(self):
         self.tree.draw(self.visualiser)
+        self.visualiser.drawRectangle(
+            self.visualisationParameters.rectangle, c='orange', lw=2)
         self.visualiser.drawPoints(self.visualisationParameters.points)
         self.thread = Thread(target=lambda: self.tree.searchVis(
             self.visualisationParameters.rectangle, self.visualiser))
