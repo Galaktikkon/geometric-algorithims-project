@@ -44,5 +44,10 @@ class Interface(Frame):
             self, self.graph, self.container)
         self.exitButton.grid(row=5, pady=10)
 
+        self.getListButton: ttk.Button = Button(
+            self, text="DUMP!", command=self.controller.createPythonListFromPoints
+        ).grid(row=6, pady=10)
+
     def startVisualisation(self):
-        visualisationWindow(self.controller.visualisationParameters)
+        if self.controller.visualisationParameters.validateParameters():
+            visualisationWindow(self.controller.visualisationParameters)

@@ -10,14 +10,18 @@ class typeFrame(LabelFrame):
             self,
             text="k-dimension",
             variable=controller.treeType,
-            value="kd"
+            value="kd",
+            command=lambda: controller.visualisationParameters.setTreeType(
+                controller.treeType.get())
         )
 
         self.quadButton = Radiobutton(
             self,
-            text="quad",
+            text=" quad",
             variable=controller.treeType,
-            value="quad"
+            value="quad",
+            command=lambda: controller.visualisationParameters.setTreeType(
+                controller.treeType.get())
         )
 
         self.kdButton.grid(column=0, row=0)

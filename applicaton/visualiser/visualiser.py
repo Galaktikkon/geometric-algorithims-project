@@ -24,24 +24,28 @@ class Visualiser():
             self.currentXLimits[1] = max(point.x(), self.currentXLimits[1])
             self.currentYLimits[0] = min(point.y(), self.currentYLimits[0])
             self.currentYLimits[1] = max(point.y(), self.currentYLimits[1])
-        self.ax.set_xlim(
-            [self.currentXLimits[0]-1, self.currentXLimits[1]+1])
-        self.ax.set_ylim(
-            [self.currentYLimits[0]-1, self.currentYLimits[1]+1])
 
-    def drawPoints(self, points, color="darkBlue"):
+        xborder = int(abs(self.currentXLimits[0]-self.currentXLimits[1])*0.02)
+        yborder = int(abs(self.currentXLimits[0]-self.currentXLimits[1])*0.02)
+
+        self.ax.set_xlim(
+            [self.currentXLimits[0]-xborder, self.currentXLimits[1]+yborder])
+        self.ax.set_ylim(
+            [self.currentYLimits[0]-xborder, self.currentYLimits[1]+yborder])
+
+    def drawPoints(self, points, color="darkBlue", markersize=3):
 
         if isinstance(points, Point):
             self.setLimits(points)
             point = self.ax.plot(points.x(), points.y(),
-                                 color=color, marker=".")[0]
+                                 color=color, marker=".", markersize=markersize)[0]
             plt.draw()
             return point
         else:
             self.setLimits(points)
             for point in points:
                 self.ax.plot(point.x(), point.y(),
-                             color=color, marker=".")
+                             color=color, marker=".", markersize=markersize)
 
             plt.draw()
 
@@ -53,6 +57,13 @@ class Visualiser():
                             [y1, y1, y2, y2, y1], c=c, lw=lw, **kwargs)[0]
         plt.draw()
         return rect
+
+    def drawVisualisation(self, tree, points: list[Point], rectangle: Rectangle):
+        foundPoints = tree.search(rectangle)
+        tree.draw(self.ax)
+        self.drawPoints(points)
+        self.drawPoints(foundPoints, color='green', markersize=7)
+        self.drawRectangle(rectangle, c='red', lw=2)
 
     def clear(self):
         self.ax.cla()

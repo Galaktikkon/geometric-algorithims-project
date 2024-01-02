@@ -5,6 +5,10 @@ from controller.visualisationParameters import visualisationParameters
 from widgets.graph import Graph
 from widgets.exitButton import exitButton
 import matplotlib.pyplot as plt
+from geometry.Point import Point
+from kdTree.kdTree import kdTree
+from quadTree.quadTree import quadTree
+from widgets.visualisationInfo import visualisationInfo
 
 
 class visualisationWindow(Toplevel):
@@ -12,15 +16,31 @@ class visualisationWindow(Toplevel):
         super().__init__()
         self.geometry("600x600")
         self.graph = Graph(self)
-        self.graph.grid(row=0, column=0)
+        self.graph.grid(row=0, column=1)
         self.controller = Controller(self.graph.ax)
         self.controller.visualisationParameters = visualisationParameters
 
-        self.menuFrame = Frame(self)
-        self.menuFrame.grid(row=1, column=0)
+        self.menuFrame = visualisationInfo(self, visualisationParameters)
+        self.menuFrame.grid(row=0, column=0)
 
         self.gifButton = ttk.Button(self.menuFrame, text="GIF")
-        self.gifButton.grid(row=0, column=1, sticky=W)
+        self.gifButton.grid(row=1, column=0, sticky=W)
 
         self.exitButton = exitButton(self.menuFrame, self.graph, self).grid(
-            row=0, column=0, sticky=E)
+            row=1, column=0, sticky=E)
+
+        self.tree = self.__createTree(
+            self.controller.visualisationParameters.treeType,
+            self.controller.visualisationParameters.points
+        )
+
+        self.controller.visualiser.drawVisualisation(
+            self.tree, self.controller.visualisationParameters.points, self.controller.visualisationParameters.rectangle)
+
+    def __createTree(self, treetype: str, points: list[Point]):
+        if treetype == 'quad':
+            tree = quadTree(points, 1)
+        elif treetype == 'kd':
+            tree = kdTree(points)
+
+        return tree

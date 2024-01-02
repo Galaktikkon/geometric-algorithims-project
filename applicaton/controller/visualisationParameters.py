@@ -34,3 +34,10 @@ class visualisationParameters:
                       "set of points cannot be ommited as a simulation parameter")
         else:
             self.points = points
+
+    def validateParameters(self):
+        if not all(False if parameter is None else True for parameter in [self.name, self.treeType, self.points, self.rectangle]):
+            showerror("visualisation parameters error",
+                      "not enough parameters to start visualisation")
+            return False
+        return True

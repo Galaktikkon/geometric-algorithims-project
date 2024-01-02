@@ -248,6 +248,23 @@ class Controller:
         self.visualisationParameters.setPoints(points)
         self.visualisationParameters.setRectangle(rectangle)
 
+        self.points = points
+        self.testCaseName = name
+        self.rectangle = rectangle
+
         self.visualiser.clear()
         self.visualiser.drawPoints(points)
         self.visualiser.drawRectangle(rectangle, c='red')
+
+    def __createListFromPoints(self, points):
+        output = []
+        for point in points:
+            output.append((point.x(), point.y()))
+
+        return output
+
+    def createPythonListFromPoints(self):
+        with open(os.path.join(self.directory, self.testCaseName), "w") as f:
+            output = self.__createListFromPoints(self.points)
+            f.write(self.testCaseName+" = "+str(output))
+        f.close()
