@@ -40,7 +40,7 @@ class visualisationInfo(Frame):
             yMin = min(point.y(), yMin)
             yMax = max(point.x(), yMax)
 
-        return f'x:[{xMin},{xMax}], y:[{yMin},{yMax}]'
+        return f'\n x:[{xMin},{xMax}], \n y:[{yMin},{yMax}]'
 
     def __getRectangle(self, rectangle: Rectangle):
 
@@ -49,4 +49,4 @@ class visualisationInfo(Frame):
         ne = rectangle.upperRight
         nw = Point((rectangle.lowerLeft.y(), rectangle.upperRight.x()))
 
-        return f'sw: {sw}, se: {se}, ne: {ne}, nw: {nw}'
+        return f'\n sw: {sw}, \n se: {se}, \n ne: {ne}, \n nw: {nw}'

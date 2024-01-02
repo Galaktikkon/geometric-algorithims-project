@@ -14,20 +14,20 @@ from widgets.visualisationInfo import visualisationInfo
 class visualisationWindow(Toplevel):
     def __init__(self, visualisationParameters: visualisationParameters):
         super().__init__()
-        self.geometry("600x600")
+        self.geometry("850x550")
         self.graph = Graph(self)
-        self.graph.grid(row=0, column=1)
+        self.graph.grid(row=0, column=3)
         self.controller = Controller(self.graph.ax)
         self.controller.visualisationParameters = visualisationParameters
 
         self.menuFrame = visualisationInfo(self, visualisationParameters)
-        self.menuFrame.grid(row=0, column=0)
+        self.menuFrame.grid(row=0, column=0, rowspan=7, columnspan=2)
 
         self.gifButton = ttk.Button(self.menuFrame, text="GIF")
-        self.gifButton.grid(row=1, column=0, sticky=W)
+        self.gifButton.grid(row=8, column=0, pady=5)
 
         self.exitButton = exitButton(self.menuFrame, self.graph, self).grid(
-            row=1, column=0, sticky=E)
+            row=9, column=0, pady=5)
 
         self.tree = self.__createTree(
             self.controller.visualisationParameters.treeType,
