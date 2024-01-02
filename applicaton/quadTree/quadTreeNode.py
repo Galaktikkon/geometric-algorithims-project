@@ -41,14 +41,17 @@ class quadTreeNode:
 
         if not self.boundary.containsPoint(point):
             bad = vis.drawRectangle(self.boundary, c='red')
-            sleep(1)
-            vis.ax.remove(bad)
+            sleep(0.5)
+            bad.remove()
             return False
 
         self.points.append(point)
         if self.capacity < len(self.points):
             if self.isLeaf:
-                self.__divideVis(vis, lw)
+                divide = vis.drawRectangle(self.boundary, c='yellow')
+                sleep(0.5)
+                divide.remove()
+                self.__divideVis(vis, lw*4/5)
                 for p in self.points:
                     self.northWest.insertVis(p, vis, lw*4/5) \
                         or self.northEast.insertVis(p, vis, lw*4/5) \
@@ -112,7 +115,7 @@ class quadTreeNode:
         vis.drawRectangle(northEastRectangle, lw=lw)
         vis.drawRectangle(southWestRectangle, lw=lw)
         vis.drawRectangle(southEastRectangle, lw=lw)
-        sleep(1)
+        sleep(0.5)
 
         self.northWest = quadTreeNode(self.capacity, northWestRectangle)
         self.northEast = quadTreeNode(self.capacity, northEastRectangle)
@@ -141,33 +144,41 @@ class quadTreeNode:
 
         return output
 
-    def searchVis(self, rect: Rectangle, vis) -> list[Point]:
+    def searchVis(self, rect: Rectangle, vis, lw) -> list[Point]:
 
         if not rect.intersects(self.boundary):
-            bad = vis.drawRectangle(self.boundary, c='red')
-            sleep(1)
-            vis.ax.remove(bad)
+            bad = vis.drawRectangle(self.boundary, c='red', lw=lw)
+            sleep(0.5)
+            bad.remove()
+            sleep(0.5)
             return []
 
         if rect.containsRect(self.boundary):
-            good = vis.drawRectangle(self.boundary, c='cyan')
-            sleep(1)
-            vis.ax.remove(good)
+            good = vis.drawRectangle(self.boundary, c='cyan', lw=lw)
+            sleep(0.5)
+            good.remove()
+            sleep(0.5)
+            vis.drawPoints(self.points, color='cyan', markersize=7)
+            sleep(0.5)
             return self.points
 
         output = []
         if rect.intersects(self.boundary):
-            ok = vis.drawRectangle(self.boundary, c='green')
-            sleep(1)
+            ok = vis.drawRectangle(self.boundary, c='green', lw=lw)
+            sleep(0.5)
+            ok.remove()
 
             if self.isLeaf:
-                return list(filter(lambda point: rect.containsPoint(point),  self.points))
+                goodPoints = list(
+                    filter(lambda point: rect.containsPoint(point),  self.points))
+                vis.drawPoints(goodPoints, color='green', markersize=7)
+                sleep(0.5)
+                return goodPoints
             else:
-                output += self.northWest.search(rect)
-                output += self.northEast.search(rect)
-                output += self.southWest.search(rect)
-                output += self.southEast.search(rect)
-            vis.ax.remove(ok)
+                output += self.northWest.searchVis(rect, vis, lw*4/5)
+                output += self.northEast.searchVis(rect, vis, lw*4/5)
+                output += self.southWest.searchVis(rect, vis, lw*4/5)
+                output += self.southEast.searchVis(rect, vis, lw*4/5)
 
         return output
 

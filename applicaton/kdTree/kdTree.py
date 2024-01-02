@@ -3,6 +3,7 @@ from kdTree.QuickSelect import quickSelect
 from geometry.Rectangle import Rectangle
 from math import inf
 from kdTree.kdTreeNode import kdTreeNode
+from visualiser.visualiser import Visualiser
 
 
 class kdTree:
@@ -14,7 +15,7 @@ class kdTree:
         self.root = self.__buildTree(points)
         self.counter = 0
 
-    def __buildTree(self, points):
+    def buildTree(self, points):
         def buildTreeRec(points: list[Point], l: int, r: int, rect: Rectangle, dim: int):
             if l > r:
                 return None
@@ -72,3 +73,28 @@ class kdTree:
 
     def draw(self, ax):
         self.root.draw(ax, lw=2)
+
+
+def buildTreeVis(self, points, vis: Visualiser):
+    def buildTreeRec(points: list[Point], l: int, r: int, rect: Rectangle, dim: int, vis: Visualiser):
+        if l > r:
+            return None
+        if l == r:
+            return points[l]
+        mid = (l+r)//2
+        midPoint = quickSelect(points, l, r, mid, dim)
+        newNode = kdTreeNode(midPoint.get_dim(
+            dim), dim, rect, points[l:r+1])
+        rectLeft, rectRight = rect.divideRectIntoTwo(
+            dim, midPoint.get_dim(dim))
+        newNode.left = buildTreeRec(
+            points, l, mid, rectLeft, (dim+1) % self.dim)
+        newNode.right = buildTreeRec(
+            points, mid+1, r, rectRight, (dim+1) % self.dim)
+        return newNode
+    lowerLeft, upperRight = Point((inf, inf)), Point((-inf, -inf))
+    for point in points:
+        lowerLeft = lowerLeft.lowerLeft(point)
+        upperRight = upperRight.upperRight(point)
+    rectStart = Rectangle(lowerLeft, upperRight)
+    return buildTreeRec(points, 0, len(points)-1, rectStart, 0)

@@ -58,7 +58,7 @@ class Visualiser():
         plt.draw()
         return rect
 
-    def drawVisualisation(self, tree, points: list[Point], rectangle: Rectangle):
+    def drawBuild(self, tree, points: list[Point], rectangle: Rectangle):
         foundPoints = tree.search(rectangle)
         tree.draw(self.ax)
         self.drawPoints(points)

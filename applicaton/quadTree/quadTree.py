@@ -49,9 +49,9 @@ class quadTree:
 
         vis.drawRectangle(rect, c='orange')
         sleep(1)
-        return self.root.searchVis(rect)
+        return self.root.searchVis(rect, vis, lw=2)
 
-    def __buildTreeVis(self, points, vis: Visualiser):
+    def buildTreeVis(self, points, vis: Visualiser):
         lowerLeft, upperRight = self.__findBorders(points)
 
         rootRectangle = Rectangle(lowerLeft, upperRight)
@@ -64,6 +64,6 @@ class quadTree:
             currentPoint = vis.drawPoints(point, color='purple')
             sleep(1)
             self.root.insertVis(point, vis, 2)
-            vis.ax.remove(currentPoint)
+            currentPoint.remove()
             currentPoint = vis.drawPoints(point)
             sleep(1)

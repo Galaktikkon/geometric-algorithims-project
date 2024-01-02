@@ -273,10 +273,21 @@ class Controller:
             f.write(self.testCaseName+" = "+str(output))
         f.close()
 
-    def reset(self, thread: Thread):
-        if not thread:
+    def reset(self):
+        if not self.thread:
             return
-        thread.join()
+        self.thread.stop()
+        self.visualiser.clear()
 
     def showBuild(self):
-        pass
+        self.visualiser.clear()
+        self.thread = Thread(target=lambda: self.tree.buildTreeVis(
+            self.visualisationParameters.points, self.visualiser))
+        self.thread.start()
+
+    def showSearch(self):
+        self.tree.draw(self.ax)
+        self.visualiser.drawPoints(self.visualisationParameters.points)
+        self.thread = Thread(target=lambda: self.tree.searchVis(
+            self.visualisationParameters.rectangle, self.visualiser))
+        self.thread.start()

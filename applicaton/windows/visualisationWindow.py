@@ -23,19 +23,25 @@ class visualisationWindow(Toplevel):
         self.menuFrame = visualisationInfo(self, visualisationParameters)
         self.menuFrame.grid(row=0, column=0, rowspan=7, columnspan=2)
 
-        self.gifButton = ttk.Button(self.menuFrame, text="GIF")
-        self.gifButton.grid(row=8, column=0, pady=5)
+        self.searchButton = ttk.Button(
+            self.menuFrame, text="SEARCH", command=self.controller.showSearch)
+        self.searchButton.grid(row=8, column=0, pady=5)
+
+        self.buildButton = ttk.Button(
+            self.menuFrame, text="BUILD", command=self.controller.showBuild)
+        self.buildButton.grid(row=9, column=0)
+
+        self.stopButton = ttk.Button(
+            self.menuFrame, text="CLEAR", command=self.controller.reset)
+        self.stopButton.grid(row=10, column=0)
 
         self.exitButton = exitButton(self.menuFrame, self.graph, self).grid(
-            row=9, column=0, pady=5)
+            row=11, column=0, pady=5)
 
         self.controller.tree = self.__createTree(
             self.controller.visualisationParameters.treeType,
             self.controller.visualisationParameters.points
         )
-
-        self.controller.visualiser.drawVisualisation(
-            self.tree, self.controller.visualisationParameters.points, self.controller.visualisationParameters.rectangle)
 
     def __createTree(self, treetype: str, points: list[Point]):
         if treetype == 'quad':
