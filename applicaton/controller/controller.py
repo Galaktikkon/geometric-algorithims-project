@@ -6,14 +6,14 @@ from matplotlib.backend_bases import MouseButton
 from geometry.Point import Point
 from geometry.Rectangle import Rectangle
 from visualiser.visualiser import Visualiser
-from windows.pointsWindow import pointsWindow
-from windows.rectangleWindow import rectangleWindow
+from windows.RandomWindow import RandomWindow
 from controller.visualisationParameters import visualisationParameters
 import random
 import os
 import jsonpickle
 import json
 from threading import Thread
+from math import inf
 
 
 class Controller:
@@ -138,12 +138,13 @@ class Controller:
 
     def randomPoints(self):
         self.__resetRanges()
-        window = pointsWindow(self.maxX, self.minX, self.maxY, self.minY, self)
+        window = RandomWindow(self.maxX, self.minX, self.maxY,
+                              self.minY, self, self.generateRandomPoints)
 
     def randomRectangle(self):
         self.__resetRanges()
-        window = rectangleWindow(self.maxX, self.minX,
-                                 self.maxY, self.minY, self)
+        window = RandomWindow(self.maxX, self.minX,
+                              self.maxY, self.minY, self, self.generateRandomRectangle)
 
     def generateRandomPoints(self):
 
@@ -201,6 +202,13 @@ class Controller:
         self.points = []
         self.rectangle = None
 
+    def refresh(self):
+        self.visualiser.currentXLimits = [inf, -inf]
+        self.visualiser.currentYLimits = [inf, -inf]
+        self.visualiser.setLimits(self.points)
+        self.visualiser.setLimits(
+            [self.rectangle.lowerLeft, self.rectangle.upperRight])
+
     def __loadData(self, path):
         testFile = os.path.join(path, 'tests.json')
         if not os.path.isfile(testFile):
@@ -252,25 +260,13 @@ class Controller:
         self.visualisationParameters.setRectangle(rectangle)
 
         self.points = points
-        self.testCaseName = name
+        self.testCaseName.initialize(name)
         self.rectangle = rectangle
 
         self.visualiser.clear()
         self.visualiser.drawPoints(points)
         self.visualiser.drawRectangle(rectangle, c='red')
-
-    def __createListFromPoints(self, points):
-        output = []
-        for point in points:
-            output.append((point.x(), point.y()))
-
-        return output
-
-    def createPythonListFromPoints(self):
-        with open(os.path.join(self.directory, self.testCaseName), "w") as f:
-            output = self.__createListFromPoints(self.points)
-            f.write(self.testCaseName+" = "+str(output))
-        f.close()
+        self.refresh()
 
     def reset(self):
         if not self.thread:

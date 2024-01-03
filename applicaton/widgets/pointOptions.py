@@ -27,7 +27,7 @@ class pointOptions(LabelFrame):
         self.SpinBox.grid(row=1, column=2, columnspan=2)
 
         self.generateRandom = ttk.Button(
-            self, text="random", command=lambda: self.controller.randomPoints())
+            self, text="random", command=self.controller.randomPoints)
         self.generateRandom.grid(row=0, column=2, columnspan=2)
 
         self.grid_columnconfigure(0, weight=1)

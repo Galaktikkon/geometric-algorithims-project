@@ -70,8 +70,8 @@ class kdTree:
             return 0
         return count(self.root, rectangle)
 
-    def draw(self, ax):
-        self.root.draw(ax, lw=2)
+    def draw(self, vis: Visualiser):
+        self.root.draw(vis, lw=2)
 
     def buildTreeVis(self, points, vis: Visualiser):
         def buildTreeRec(points: list[Point], l: int, r: int, rect: Rectangle, dim: int, vis: Visualiser, lw=2):

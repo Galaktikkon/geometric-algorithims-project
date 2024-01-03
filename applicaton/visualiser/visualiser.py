@@ -25,8 +25,8 @@ class Visualiser():
             self.currentYLimits[0] = min(point.y(), self.currentYLimits[0])
             self.currentYLimits[1] = max(point.y(), self.currentYLimits[1])
 
-        xborder = int(abs(self.currentXLimits[0]-self.currentXLimits[1])*0.02)
-        yborder = int(abs(self.currentXLimits[0]-self.currentXLimits[1])*0.02)
+        xborder = int(abs(self.currentXLimits[0]-self.currentXLimits[1])*0.1)
+        yborder = int(abs(self.currentXLimits[0]-self.currentXLimits[1])*0.1)
 
         self.ax.set_xlim(
             [self.currentXLimits[0]-xborder, self.currentXLimits[1]+yborder])

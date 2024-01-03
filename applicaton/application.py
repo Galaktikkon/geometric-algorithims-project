@@ -10,11 +10,7 @@ class App(Tk):
         self.title('tree search')
         self.geometry('1150x850')
         self.resizable(False, False)
-        self.__createWidgets()
-
-    def __createWidgets(self):
-        self.graph = Graph(self)
-        self.graph.grid(row=0, column=1)
-        self.controller = Controller(self.graph.ax)
-        self.menu = Interface(self, self.controller, self.graph)
-        self.menu.grid(row=0, column=0)
+        graph: Graph = Graph(self)
+        graph.grid(row=0, column=1)
+        self.controller = Controller(graph.ax)
+        Interface(self, self.controller, graph).grid(row=0, column=0)
