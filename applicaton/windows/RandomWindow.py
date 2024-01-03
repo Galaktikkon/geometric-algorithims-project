@@ -1,15 +1,16 @@
 from tkinter import *
 from tkinter import ttk
-from abc import abstractmethod, ABC
+from tkinter.messagebox import showerror
 
 
-class abstractRandomWindow(Toplevel, ABC):
+class RandomWindow(Toplevel):
 
-    def __init__(self, maxX, minX, maxY, minY, controller):
+    def __init__(self, maxX, minX, maxY, minY, controller, exitFunc):
         super().__init__()
         self.geometry("200x100")
 
         self.controller = controller
+        self.exitFunc = exitFunc
 
         self.frame = LabelFrame(self, text='specify x and y', padx=10, pady=10)
 
@@ -43,6 +44,15 @@ class abstractRandomWindow(Toplevel, ABC):
 
         self.frame.pack()
 
-    @abstractmethod
     def exit(self, window, minX, maxX, minY, maxY):
-        pass
+        if float(minX.get()) >= float(maxX.get()):
+            showerror("invalid input",
+                      "max_x value should be greater than min_x value")
+            return
+        elif float(minY.get()) >= float(maxY.get()):
+            showerror("invalid input",
+                      "max_y value should be greater than min_y value")
+            return
+        else:
+            self.exitFunc()
+            window.destroy()

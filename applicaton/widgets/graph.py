@@ -10,7 +10,7 @@ from visualiser.visualiser import Visualiser
 class Graph(Frame):
     def __init__(self, container):
         super().__init__(container)
-        self.fig, self.ax = plt.subplots(figsize=(6, 5))
+        self.fig, self.ax = plt.subplots(figsize=(10, 8))
 
         self.canvas = FigureCanvasTkAgg(self.fig, master=self)
         self.canvas.draw()

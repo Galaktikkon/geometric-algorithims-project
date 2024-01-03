@@ -14,7 +14,8 @@ from widgets.visualisationInfo import visualisationInfo
 class visualisationWindow(Toplevel):
     def __init__(self, visualisationParameters: visualisationParameters):
         super().__init__()
-        self.geometry("850x550")
+        self.geometry("1200x850")
+        self.resizable(False, False)
         self.graph = Graph(self)
         self.graph.grid(row=0, column=3)
         self.controller = Controller(self.graph.ax)

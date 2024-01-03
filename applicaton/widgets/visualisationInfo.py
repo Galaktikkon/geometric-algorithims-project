@@ -31,6 +31,14 @@ class visualisationInfo(Frame):
         Label(self, text="rectangle range: " +
               self.__getRectangle(rectangle)).grid(row=5, column=0)
 
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_rowconfigure(3, weight=1)
+        self.grid_rowconfigure(4, weight=1)
+        self.grid_rowconfigure(5, weight=1)
+
     def __getPointsRange(self, points: list[Point]):
         xMin, yMin = inf, inf
         xMax, yMax = -inf, -inf
