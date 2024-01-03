@@ -22,4 +22,4 @@ class testFrame(LabelFrame):
 
         controller.testMenu = testMenu
 
-        testMenu.pack()
+        testMenu.pack(fill='both', expand=True)

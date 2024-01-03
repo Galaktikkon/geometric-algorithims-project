@@ -33,7 +33,7 @@ class Visualiser():
         self.ax.set_ylim(
             [self.currentYLimits[0]-xborder, self.currentYLimits[1]+yborder])
 
-    def drawPoints(self, points, color="darkBlue", markersize=3):
+    def drawPoints(self, points, color="darkBlue", markersize=5):
 
         if isinstance(points, Point):
             self.setLimits(points)
@@ -70,11 +70,13 @@ class Visualiser():
         foundPoints = tree.search(rectangle)
         tree.draw(self.ax)
         self.drawPoints(points)
-        self.drawPoints(foundPoints, color='green', markersize=7)
+        self.drawPoints(foundPoints, color='green', markersize=9)
         self.drawRectangle(rectangle, c='red', lw=2)
 
     def clear(self):
         self.ax.cla()
-        self.ax.set_xlim([0, 10])
-        self.ax.set_ylim([0, 10])
+        self.currentXLimits = [0, 10]
+        self.currentYLimits = [0, 10]
+        self.ax.set_xlim([self.currentXLimits[0], self.currentXLimits[1]])
+        self.ax.set_ylim([self.currentYLimits[0], self.currentYLimits[1]])
         plt.draw()

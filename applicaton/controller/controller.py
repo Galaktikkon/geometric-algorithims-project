@@ -205,7 +205,6 @@ class Controller:
         testFile = os.path.join(path, 'tests.json')
         if not os.path.isfile(testFile):
             with open(testFile, "w") as f:
-                json.dump({}, f, indent=4)
                 self.tests = {}
         else:
             with open(testFile, "r") as f:
@@ -276,7 +275,7 @@ class Controller:
     def reset(self):
         if not self.thread:
             return
-        self.thread.stop()
+        self.thread.join()
         self.visualiser.clear()
 
     def showBuild(self):

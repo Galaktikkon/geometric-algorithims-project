@@ -58,7 +58,7 @@ class quadTree:
         self.root = quadTreeNode(self.maxPoints, rootRectangle)
 
         for point in points:
-            currentPoint = vis.drawPoints(point, color='purple')
+            currentPoint = vis.drawPoints(point, color='purple', markersize=10)
             sleep(0.5)
             self.root.insertVis(point, vis, 2)
             currentPoint.remove()

@@ -27,3 +27,10 @@ class testOptions(LabelFrame):
         self.saveButton: Button = ttk.Button(
             self, text="SAVE", command=lambda: controller.saveData(os.path.join(controller.directory, 'tests.json')))
         self.saveButton.grid(row=4, column=1)
+
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_rowconfigure(3, weight=1)
+        self.grid_rowconfigure(4, weight=1)

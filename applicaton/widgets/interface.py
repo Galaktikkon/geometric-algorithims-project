@@ -14,7 +14,6 @@ class Interface(Frame):
 
     def __init__(self, container, controller, graph):
         super().__init__(container)
-        self.parameters = visualisationParameters()
         self.controller = controller
         self.container = container
         self.graph = graph
@@ -47,6 +46,14 @@ class Interface(Frame):
         self.getListButton: ttk.Button = Button(
             self, text="DUMP!", command=self.controller.createPythonListFromPoints
         ).grid(row=6, pady=10)
+
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_rowconfigure(3, weight=1)
+        self.grid_rowconfigure(4, weight=1)
+        self.grid_rowconfigure(5, weight=1)
+        self.grid_rowconfigure(6, weight=1)
 
     def startVisualisation(self):
         if self.controller.visualisationParameters.validateParameters():

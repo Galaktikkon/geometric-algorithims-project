@@ -8,7 +8,7 @@ class App(Tk):
     def __init__(self):
         super().__init__()
         self.title('tree search')
-        self.geometry('750x550')
+        self.geometry('1150x850')
         self.resizable(False, False)
         self.__createWidgets()
 

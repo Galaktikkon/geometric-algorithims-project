@@ -29,3 +29,8 @@ class pointOptions(LabelFrame):
         self.generateRandom = ttk.Button(
             self, text="random", command=lambda: self.controller.randomPoints())
         self.generateRandom.grid(row=0, column=2, columnspan=2)
+
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(2, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)

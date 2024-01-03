@@ -27,3 +27,7 @@ class typeFrame(LabelFrame):
         self.kdButton.grid(column=0, row=0)
 
         self.quadButton.grid(column=0, row=1)
+
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
