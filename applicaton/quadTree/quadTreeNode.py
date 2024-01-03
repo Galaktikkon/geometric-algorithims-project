@@ -41,12 +41,12 @@ class quadTreeNode:
                         self.southWest.insert(p) \
                             or self.southEast.insert(p)
             else:
-                if upperRectangle.containsPoint(p):
-                    self.northWest.insert(p) \
-                        or self.northEast.insert(p)
+                if upperRectangle.containsPoint(point):
+                    self.northWest.insert(point) \
+                        or self.northEast.insert(point)
                 else:
-                    self.southWest.insert(p) \
-                        or self.southEast.insert(p)
+                    self.southWest.insert(point) \
+                        or self.southEast.insert(point)
         return True
 
     def insertVis(self, point: Point, vis: Visualiser, lw) -> bool:
