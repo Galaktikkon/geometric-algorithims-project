@@ -23,30 +23,18 @@ class quadTreeNode:
 
         self.points.append(point)
         if self.capacity < len(self.points):
-
-            yLine = (self.boundary.lowerLeft.y() +
-                     self.boundary.upperRight.y())/2
-            lowerRectangle, upperRectangle = self.boundary.divideRectIntoTwo(
-                1,
-                yLine
-            )
-
             if self.isLeaf:
                 self.__divide()
                 for p in self.points:
-                    if upperRectangle.containsPoint(p):
-                        self.northWest.insert(p) \
-                            or self.northEast.insert(p)
-                    else:
-                        self.southWest.insert(p) \
-                            or self.southEast.insert(p)
+                    self.northWest.insert(p) \
+                        or self.northEast.insert(p) \
+                        or self.southWest.insert(p) \
+                        or self.southEast.insert(p)
             else:
-                if upperRectangle.containsPoint(point):
-                    self.northWest.insert(point) \
-                        or self.northEast.insert(point)
-                else:
-                    self.southWest.insert(point) \
-                        or self.southEast.insert(point)
+                self.northWest.insert(point) \
+                    or self.northEast.insert(point) \
+                    or self.southWest.insert(point) \
+                    or self.southEast.insert(point)
         return True
 
     def insertVis(self, point: Point, vis: Visualiser, lw) -> bool:
