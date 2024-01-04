@@ -300,7 +300,7 @@ class Controller:
         return tree
 
     def showBuild(self):
-        self.visualiser.interval.set(0.5)
+        self.visualiser.interval.set(1)
         self.visualiser.clear()
         self.tree = self.createTree(empty=True)
         self.thread = Thread(target=lambda: self.tree.buildTreeVis(
@@ -309,7 +309,7 @@ class Controller:
         self.thread.start()
 
     def showSearch(self):
-        self.visualiser.interval.set(0.5)
+        self.visualiser.interval.set(1)
         self.visualiser.clear()
         self.tree = self.createTree()
         self.tree.draw(self.visualiser)

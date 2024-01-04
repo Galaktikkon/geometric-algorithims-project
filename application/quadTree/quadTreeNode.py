@@ -48,7 +48,7 @@ class quadTreeNode:
         self.points.append(point)
         if self.capacity < len(self.points):
             if self.isLeaf:
-                divide = vis.drawRectangle(self.boundary, c='green')
+                divide = vis.drawRectangle(self.boundary, c='blue')
                 sleep(vis.interval.get())
                 divide.remove()
                 self.__divideVis(vis, lw*4/5)
@@ -58,9 +58,9 @@ class quadTreeNode:
                         or self.southWest.insertVis(p, vis, lw*4/5) \
                         or self.southEast.insertVis(p, vis, lw*4/5)
             else:
-                divide = vis.drawRectangle(self.boundary, c='yellow')
+                deeper = vis.drawRectangle(self.boundary, c='yellow')
                 sleep(vis.interval.get())
-                divide.remove()
+                deeper.remove()
                 self.northWest.insertVis(point, vis, lw*4/5) \
                     or self.northEast.insertVis(point, vis, lw*4/5) \
                     or self.southWest.insertVis(point, vis, lw*4/5) \
