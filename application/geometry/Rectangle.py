@@ -1,4 +1,5 @@
-from Point import Point
+from geometry.Point import Point
+import jsonpickle
 
 
 class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizualizacji czy cos
@@ -16,12 +17,6 @@ class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizua
     def containsPoint(self, point: Point):
         return point.follows(self.lowerLeft) and point.precedes(self.upperRight)
 
-    def draw(self, ax, c='k', lw=1, **kwargs):
-        x1, y1 = self.lowerLeft.x(), self.lowerLeft.y()
-        x2, y2 = self.upperRight.x(), self.upperRight.y()
-        ax.plot([x1, x2, x2, x1, x1],
-                [y1, y1, y2, y2, y1], c=c, lw=lw, **kwargs)
-
     def containsRect(self, other):
         return other.lowerLeft.follows(self.lowerLeft) and other.upperRight.precedes(self.upperRight)
 
@@ -35,11 +30,3 @@ class Rectangle:  # jeszcze nieprzydatne ale moze mi sie przyda do jakiejs wizua
         lowerIntersection, upperIntersection = tuple(
             lowerIntersection), tuple(upperIntersection)
         return (Rectangle(Point(Lower), Point(upperIntersection)), Rectangle(Point(lowerIntersection), Point(Upper)))
-
-    def drawLineInRect2D(self, ax, line, dim, lw=3.0, c='k'):
-        if dim == 0:
-            y1, y2 = self.lowerLeft.y(), self.upperRight.y()
-            ax.plot([line, line], [y1, y2], c, linewidth=lw)
-        if dim == 1:
-            x1, x2 = self.lowerLeft.x(), self.upperRight.x()
-            ax.plot([x1, x2], [line, line], c, linewidth=lw)
