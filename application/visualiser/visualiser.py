@@ -12,14 +12,15 @@ class Visualiser():
         self.ax = ax
         self.currentXLimits = [0, 10]
         self.currentYLimits = [0, 10]
+        self.interval = DoubleVar(value=0.5)
         self.ax.set_xlim([self.currentXLimits[0], self.currentXLimits[1]])
         self.ax.set_ylim([self.currentYLimits[0], self.currentYLimits[1]])
 
-    def setLimits(self, points_raw):
+    def setLimits(self, points):
 
-        points = [points_raw] if isinstance(points_raw, Point) else points_raw
+        pointsList = [points] if isinstance(points, Point) else points
 
-        for point in points:
+        for point in pointsList:
             self.currentXLimits[0] = min(point.x(), self.currentXLimits[0])
             self.currentXLimits[1] = max(point.x(), self.currentXLimits[1])
             self.currentYLimits[0] = min(point.y(), self.currentYLimits[0])
@@ -33,7 +34,7 @@ class Visualiser():
         self.ax.set_ylim(
             [self.currentYLimits[0]-xborder, self.currentYLimits[1]+yborder])
 
-    def drawPoints(self, points, color="darkBlue", markersize=5):
+    def drawPoints(self, points, color="darkBlue", markersize=5, **kwargs):
 
         if isinstance(points, Point):
             self.setLimits(points)
@@ -58,20 +59,13 @@ class Visualiser():
         plt.draw()
         return rect
 
-    def drawLineInRect2D(self, rect, line, dim, lw=3.0, c='k'):
+    def drawLineInRect2D(self, rectangle, line, dim, lw=3.0, c='k', **kwargs):
         if dim == 0:
-            y1, y2 = rect.lowerLeft.y(), rect.upperRight.y()
+            y1, y2 = rectangle.lowerLeft.y(), rectangle.upperRight.y()
             self.ax.plot([line, line], [y1, y2], c, linewidth=lw)
         if dim == 1:
-            x1, x2 = rect.lowerLeft.x(), rect.upperRight.x()
+            x1, x2 = rectangle.lowerLeft.x(), rectangle.upperRight.x()
             self.ax.plot([x1, x2], [line, line], c, linewidth=lw)
-
-    def drawBuild(self, tree, points: list[Point], rectangle: Rectangle):
-        foundPoints = tree.search(rectangle)
-        tree.draw(self.ax)
-        self.drawPoints(points)
-        self.drawPoints(foundPoints, color='green', markersize=9)
-        self.drawRectangle(rectangle, c='red', lw=2)
 
     def clear(self):
         self.ax.cla()

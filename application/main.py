@@ -1,4 +1,4 @@
-from application import App
+from windows.application import App
 from tkinter import *
 
 

@@ -8,13 +8,14 @@ from widgets.graph import Graph
 from widgets.exitButton import exitButton
 from windows.visualisationWindow import visualisationWindow
 import matplotlib.pyplot as plt
+from controller.controller import Controller
 
 
 class Interface(Frame):
 
     def __init__(self, container, controller, graph):
         super().__init__(container)
-        self.controller = controller
+        self.controller: Controller = controller
         self.container = container
         self.graph = graph
         self.__addContent()
@@ -51,5 +52,12 @@ class Interface(Frame):
         self.grid_rowconfigure(5, weight=1)
 
     def startVisualisation(self):
+        self.controller.visualisationParameters.setName(
+            self.controller.testCaseName.get())
+        self.controller.visualisationParameters.setPoints(
+            self.controller.points)
+        self.controller.visualisationParameters.setRectangle(
+            self.controller.rectangle)
+
         if self.controller.visualisationParameters.validateParameters():
             visualisationWindow(self.controller.visualisationParameters)

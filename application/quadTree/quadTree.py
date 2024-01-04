@@ -3,6 +3,7 @@ from geometry.Point import Point
 from quadTree.quadTreeNode import quadTreeNode
 from visualiser.visualiser import Visualiser
 from time import sleep
+import matplotlib.pyplot as plt
 
 
 class quadTree:
@@ -14,9 +15,7 @@ class quadTree:
         self.maxPoints = maxPoints
         self.root: quadTreeNode = None
 
-        if vis:
-            self.buildTreeVis(points)
-        else:
+        if not vis:
             self.__buildTree(points)
 
     def draw(self, vis: Visualiser):
@@ -59,8 +58,9 @@ class quadTree:
 
         for point in points:
             currentPoint = vis.drawPoints(point, color='purple', markersize=10)
-            sleep(0.5)
+            sleep(vis.interval.get())
             self.root.insertVis(point, vis, 2)
             currentPoint.remove()
             currentPoint = vis.drawPoints(point)
-            sleep(0.5)
+            sleep(vis.interval.get())
+

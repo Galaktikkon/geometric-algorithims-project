@@ -9,12 +9,13 @@ from geometry.Point import Point
 from kdTree.kdTree import kdTree
 from quadTree.quadTree import quadTree
 from widgets.visualisationInfo import visualisationInfo
+from threading import Thread
 
 
 class visualisationWindow(Toplevel):
     def __init__(self, visualisationParameters: visualisationParameters):
         super().__init__()
-        self.geometry("1200x850")
+        self.geometry("1250x850")
         self.resizable(False, False)
         self.graph = Graph(self)
         self.graph.grid(row=0, column=3)
@@ -38,16 +39,3 @@ class visualisationWindow(Toplevel):
 
         self.exitButton = exitButton(self.menuFrame, self.graph, self).grid(
             row=11, column=0, pady=5)
-
-        self.controller.tree = self.__createTree(
-            self.controller.visualisationParameters.treeType,
-            self.controller.visualisationParameters.points
-        )
-
-    def __createTree(self, treetype: str, points: list[Point]):
-        if treetype == 'quad':
-            tree = quadTree(points, 1)
-        elif treetype == 'kd':
-            tree = kdTree(points)
-
-        return tree

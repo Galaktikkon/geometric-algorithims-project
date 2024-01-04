@@ -14,6 +14,9 @@ import jsonpickle
 import json
 from threading import Thread
 from math import inf
+from time import sleep
+from quadTree.quadTree import quadTree
+from kdTree.kdTree import kdTree
 
 
 class Controller:
@@ -35,6 +38,7 @@ class Controller:
         self.currentRectangleVerticle = None
         self.currentRectangleVerticleB = None
         self.rectangleVerticle: Point = None
+        self.currentRectangelDrawn = None
 
         self.minX = StringVar()
         self.minY = StringVar()
@@ -100,35 +104,43 @@ class Controller:
             self.visualiser.drawPoints(newPoint)
 
     def __onClickRectangle(self, event):
+        if self.currentRectangelDrawn is not None:
+            self.currentRectangelDrawn.remove()
+            self.currentRectangelDrawn = None
         if event.inaxes != self.ax:
             return
         if event.button is MouseButton.LEFT:
             if self.rectangleVerticle is not None:
                 self.rectangle = Rectangle(
                     self.rectangleVerticle, Point((event.xdata, event.ydata)))
-                self.visualiser.drawRectangle(self.rectangle, c='red')
+                self.currentRectangelDrawn = self.visualiser.drawRectangle(
+                    self.rectangle, c='orange')
                 self.visualiser.drawPoints(
-                    Point((event.xdata, event.ydata)), color='red')
+                    Point((event.xdata, event.ydata)), color='orange')
                 self.stopInput()
                 self.rectangleVerticle = None
 
             else:
                 self.rectangleVerticle = Point((event.xdata, event.ydata))
-                self.visualiser.drawPoints(self.rectangleVerticle, color='red')
+                self.visualiser.drawPoints(
+                    self.rectangleVerticle, color='orange')
 
     def __onMoveRectangle(self, event):
+        if self.currentRectangelDrawn is not None:
+            self.currentRectangelDrawn.remove()
+            self.currentRectangelDrawn = None
         if event.inaxes != self.ax:
             self.__clearInput()
         else:
             self.__clearInput()
             if self.rectangleVerticle is not None:
                 self.currentRectangle = self.visualiser.drawRectangle(
-                    Rectangle(self.rectangleVerticle, Point((event.xdata, event.ydata))), c='red')
+                    Rectangle(self.rectangleVerticle, Point((event.xdata, event.ydata))), c='orange')
                 self.currentRectangleVerticleB = self.visualiser.drawPoints(
-                    Point((event.xdata, event.ydata)), color='red')
+                    Point((event.xdata, event.ydata)), color='orange')
             else:
                 self.currentRectangleVerticle = self.visualiser.drawPoints(
-                    Point((event.xdata, event.ydata)), color='red')
+                    Point((event.xdata, event.ydata)), color='orange')
 
     def __resetRanges(self):
         self.maxX.set("")
@@ -168,12 +180,11 @@ class Controller:
         self.visualiser.clear()
         self.visualiser.drawPoints(self.points)
 
-        if self.rectangle is not None:
-            self.currentRectangle = self.visualiser.drawRectangle(
-                self.rectangle, c='red', lw=1.5)
+        if self.currentRectangelDrawn is not None:
+            self.currentRectangelDrawn = self.visualiser.drawRectangle(
+                self.rectangle, c='orange', lw=1.5)
 
     def generateRandomRectangle(self):
-
         x1 = random.uniform(float(self.minX.get()), float(self.maxX.get()))
         y1 = random.uniform(float(self.minY.get()), float(self.maxY.get()))
         a = Point((x1, y1))
@@ -182,13 +193,13 @@ class Controller:
             y2 = random.uniform(float(self.minY.get()), float(self.maxY.get()))
             if x2 != x1 and y2 != y1:
                 b = Point((x2, y2))
-                if self.currentRectangle is not None:
-                    self.currentRectangle.remove()
-                    self.currentRectangle = None
+                if self.currentRectangelDrawn is not None:
+                    self.currentRectangelDrawn.remove()
+                    self.currentRectangelDrawn = None
 
                 self.rectangle = Rectangle(a, b)
-                self.currentRectangle = self.visualiser.drawRectangle(
-                    self.rectangle, c='red', lw=1.5)
+                self.currentRectangelDrawn = self.visualiser.drawRectangle(
+                    self.rectangle, c='orange', lw=1.5)
                 break
 
     def stopInput(self):
@@ -271,16 +282,36 @@ class Controller:
     def reset(self):
         if not self.thread:
             return
-        self.thread.join()
-        self.visualiser.clear()
+        self.visualiser.interval.set(0)
+        self.thread = None
+
+    def createTree(self, empty=False):
+        if self.visualisationParameters.treeType == 'quad':
+            if empty:
+                tree = quadTree(
+                    self.visualisationParameters.points, 1, vis=True)
+            else:
+                tree = quadTree(self.visualisationParameters.points, 1)
+        elif self.visualisationParameters.treeType == 'kd':
+            if empty:
+                tree = kdTree(self.visualisationParameters.points, vis=True)
+            else:
+                tree = kdTree(self.visualisationParameters.points)
+        return tree
 
     def showBuild(self):
+        self.visualiser.interval.set(0.5)
         self.visualiser.clear()
+        self.tree = self.createTree(empty=True)
         self.thread = Thread(target=lambda: self.tree.buildTreeVis(
             self.visualisationParameters.points, self.visualiser))
+
         self.thread.start()
 
     def showSearch(self):
+        self.visualiser.interval.set(0.5)
+        self.visualiser.clear()
+        self.tree = self.createTree()
         self.tree.draw(self.visualiser)
         self.visualiser.drawRectangle(
             self.visualisationParameters.rectangle, c='orange', lw=2)

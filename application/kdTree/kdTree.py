@@ -8,12 +8,14 @@ from time import sleep
 
 
 class kdTree:
-    def __init__(self, points: list[Point]):
+    def __init__(self, points: list[Point], vis=False):
         assert len(points) > 0, 'KD-Tree cannot be initialized as empty'
         self.dim = points[0].dim
         assert all(
             point.dim == self.dim for point in points), 'Points must have same number of dimensions'
-        self.root = self.__buildTree(points)
+
+        if not vis:
+            self.root = self.__buildTree(points)
 
     def __buildTree(self, points):
         def buildTreeRec(points: list[Point], l: int, r: int, rect: Rectangle, dim: int):
@@ -81,13 +83,13 @@ class kdTree:
                 return points[l]
             mid = (l+r)//2
             midPoint = quickSelect(points, l, r, mid, dim)
-            sleep(0.5)
+            sleep(vis.interval.get())
             pointVis = vis.drawPoints(midPoint, color='cyan')
-            sleep(0.5)
+            sleep(vis.interval.get())
             newNode = kdTreeNode(midPoint.get_dim(
                 dim), dim, rect, points[l:r+1])
             vis.drawLineInRect2D(newNode.rect, newNode.axis, newNode.dim, lw)
-            sleep(0.5)
+            sleep(vis.interval.get())
             pointVis.remove()
             rectLeft, rectRight = rect.divideRectIntoTwo(
                 dim, midPoint.get_dim(dim))
@@ -109,21 +111,21 @@ class kdTree:
             if isinstance(p, Point):
                 if rect.containsPoint(p):
                     vis.drawPoints(p, color='cyan', markersize=7)
-                    sleep(0.5)
+                    sleep(vis.interval.get())
                     return [p]
             elif rect.containsRect(p.rect):
                 rectVis = vis.drawRectangle(p.rect, c='green', lw=2)
                 res = p.allLeaves()
                 vis.drawPoints(res, color='cyan', markersize=7)
-                sleep(0.5)
+                sleep(vis.interval.get())
                 rectVis.remove()
-                sleep(0.5)
+                sleep(vis.interval.get())
                 return res
             elif rectangle.intersects(p.rect):
                 rectVis = vis.drawRectangle(p.rect, c='brown', lw=2)
-                sleep(0.5)
+                sleep(vis.interval.get())
                 rectVis.remove()
-                sleep(0.5)
+                sleep(vis.interval.get())
                 res = []
                 res += searchKD(p.left, rect, vis)
                 res += searchKD(p.right, rect, vis)
