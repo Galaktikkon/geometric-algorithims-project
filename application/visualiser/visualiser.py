@@ -15,6 +15,7 @@ class Visualiser():
         self.interval = DoubleVar(value=0.5)
         self.ax.set_xlim([self.currentXLimits[0], self.currentXLimits[1]])
         self.ax.set_ylim([self.currentYLimits[0], self.currentYLimits[1]])
+        self.ins = None
 
     def setLimits(self, points):
 
@@ -34,7 +35,7 @@ class Visualiser():
         self.ax.set_ylim(
             [self.currentYLimits[0]-xborder, self.currentYLimits[1]+yborder])
 
-    def drawPoints(self, points, color="darkBlue", markersize=5, **kwargs):
+    def drawPoints(self, points, color="darkBlue", markersize=7, **kwargs):
 
         if isinstance(points, Point):
             self.setLimits(points)

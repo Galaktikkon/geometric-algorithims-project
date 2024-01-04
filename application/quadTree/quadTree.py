@@ -63,4 +63,3 @@ class quadTree:
             currentPoint.remove()
             currentPoint = vis.drawPoints(point)
             sleep(vis.interval.get())
-

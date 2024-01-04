@@ -116,7 +116,7 @@ class kdTree:
             elif rect.containsRect(p.rect):
                 rectVis = vis.drawRectangle(p.rect, c='green', lw=2)
                 res = p.allLeaves()
-                vis.drawPoints(res, color='cyan', markersize=7)
+                vis.drawPoints(res, color='green', markersize=7)
                 sleep(vis.interval.get())
                 rectVis.remove()
                 sleep(vis.interval.get())
