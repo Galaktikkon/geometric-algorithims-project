@@ -72,8 +72,8 @@ def generate_cross_points(middle=0, width=100, height=100, n=100,  **kwargs):
     return list(s)
 
 
-A = [10**3, 5*10**3, 10**4, 5*10**4, 10**5, 5*10**5, 10**6]
-B = [30, 75, 100, 200, 500, 800, 1000]
+# A = [10**3, 5*10**3, 10**4, 5*10**4, 10**5, 5*10**5, 10**6]
+# B = [30, 75, 100, 200, 500, 800, 1000]
 
 
 # points_uniform = [generate_uniform_points(-1000, 1000, size) for size in A]
@@ -97,8 +97,8 @@ for i in range(6):
     capList.append(capList[-1]*10)
 
 points = createPointList(generate_uniform_points(-10000, 10000, 10**5))
-ax = plt.subplot()
-vis = Visualiser(ax)
+# ax = plt.subplot()
+# vis = Visualiser(ax)
 
 # tree = quadTree(points, 1)
 # tree = kdTree(points)
@@ -114,7 +114,7 @@ vis = Visualiser(ax)
 # vis.drawPoints(res, color='green', markersize=8)
 # ax.scatter([p.x() for p in res], [p.y() for p in res], c='green', s=15)
 
-plt.show()
+# plt.show()
 
 
 # for i in range(6, 7):
@@ -138,6 +138,10 @@ def generateRandomRectangle(left=-1000, right=1000):
 
 
 def compareCap(points, capList):
+    bTimes = []
+    sTimes = []
+    count = []
+
     for cap in capList:
         print(f'Capacity: {cap}')
         buildTime, tree = checkTimeBuild(quadTree, points, cap, False)
@@ -146,6 +150,20 @@ def compareCap(points, capList):
         print(f'szukanie: {round(searchTime,3)}')
         print(f'ile: {resLen}')
         print('\n')
+        bTimes.append(buildTime)
+        sTimes.append(searchTime)
+        count.append(resLen)
+
+    ax = plt.subplot()
+    ax.plot([arg for arg in capList], [val for val in bTimes],
+            label='czas budowania', color='darkblue')
+
+    ax.plot([arg for arg in capList], [
+        val for val in sTimes], label='czas przeszukiwania', color='purple')
+    plt.xlabel("Capacity")
+    plt.ylabel("Czas [s]")
+    plt.legend()
+    plt.show()
 
 
 def compare(pointsList):
