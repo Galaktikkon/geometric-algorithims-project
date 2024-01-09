@@ -19,12 +19,12 @@ def findPointsIn(points: list[Point], rect: Rectangle):
     return end-start, len(res)
 
 
-def checkTimeBuild(algo, points, kd=True):
+def checkTimeBuild(algo, points, cap, kd=True):
     start = perf_counter()
     if kd:
         tree = algo(points)
     else:
-        tree = algo(points, 1)
+        tree = algo(points, cap)
     end = perf_counter()
     return end-start, tree
 
@@ -60,7 +60,7 @@ def generate_grid_points(jump=2, a=10):
     return points
 
 
-def generate_cross_points(middle=0, width=100, height=100, n=100):
+def generate_cross_points(middle=0, width=100, height=100, n=100,  **kwargs):
     a = n//2
     s = set()
     while len(s) < a:
@@ -90,24 +90,31 @@ rect = Rectangle(Point((-10, -10)), Point((90, 90)))
 # points = createPointList([(0, 30.422849566273783), (48.134635363912, 0), (60.642834014856845, 0), (49.77651939600119, 0), (0, 66.83484493208857), (1.8310988218477604, 0), (-12.006691225371483, 0), (75.55186776613411, 0), (0, -18.693658385781646), (94.48588488297707, 0), (78.91299463564027, 0), (0, 38.76326252970219), (0, 14.215189394990887), (9.204155645419519, 0), (0, 59.81761551490143), (-49.343940595310464, 0), (0, -15.972508763707012), (-60.16939220572086, 0), (0, 24.68424669502822), (-60.30427556677764, 0), (83.13361858959806, 0), (-32.47310489436393, 0), (64.53499493298983, 0), (0, 52.151178766281134), (30.77612090685156, 0), (0, -6.77034005810313), (-85.23310282321188, 0), (-13.955030333925961, 0), (-38.33186350045978, 0), (-62.95266788202327, 0), (-98.57920758537715, 0), (-63.41219739304713, 0), (0, 65.64783329524596), (0, -58.99681490076956), (0, 25.620470656913014), (0, 65.6512785808003), (34.924349172535926, 0), (0, 10.439390608683837), (-96.17877784409117, 0), (0, 11.676311081371324), (70.89075241752724, 0), (85.55222343830081, 0), (-68.51967698158924, 0), (0, -35.23683281253966), (0, -40.01550400621841), (-34.84659527933556, 0), (-85.71929626795918, 0), (0, -66.57598447350024), (70.9489416293558, 0), (52.9399121650585, 0), (0, -83.78564249470645), (45.806475795334336, 0), (0, 96.07623558256867),
 #                           (51.93196373007211, 0), (38.122758436284215, 0), (-75.212582350643, 0), (0, 49.4305011233736), (0, 46.81522484392639), (-46.70126299172637, 0), (61.78794431331559, 0), (0, -14.489904816208309), (0, 95.94927106899453), (0, -35.376946061201295), (0, 59.621719417001), (0, 38.099303998455696), (0, -4.365512300745394), (-81.2641379889512, 0), (0, -1.383932130245924), (-9.18763464184454, 0), (0, 68.88921981548575), (-94.91793233483416, 0), (-39.028638504736925, 0), (-60.98104175158019, 0), (0, -60.02450760409146), (0, 48.75252002341901), (7.568615985560669, 0), (0, 24.553558276751545), (0, -87.965192075364), (37.65203344711642, 0), (0, 22.943740776348548), (0, 96.95322773810639), (-49.324723449890385, 0), (0, -11.239905463511107), (0, -5.334843901681467), (-64.9693051610102, 0), (0, 21.79315508308828), (0, -46.993689878325725), (0, -96.75118880260325), (0, 33.03636104754423), (0, -37.10620055451162), (-50.242478812781385, 0), (69.3190419401061, 0), (0, 57.48676882033939), (0, -12.176116027172654), (0, 56.55274224988921), (78.8696724755253, 0), (0, 82.63558132452457), (0, -57.48365606104422), (0, 71.80902809674842), (97.98726745823117, 0)])
 
-# ax = plt.subplot()
-# vis = Visualiser(ax)
 
-# # tree = quadTree(points, 1)
+capList = [1, 3, 5]
+
+for i in range(6):
+    capList.append(capList[-1]*10)
+
+points = createPointList(generate_uniform_points(-10000, 10000, 10**5))
+ax = plt.subplot()
+vis = Visualiser(ax)
+
+# tree = quadTree(points, 1)
 # tree = kdTree(points)
 
 # res = tree.search(rect)
 # print(len(res))
-# # print(len(findPointsIn(points, rect)))
+# print(len(findPointsIn(points, rect)))
 # tree.draw(vis)
 # vis.drawRectangle(rect, c='red')
-# vis.drawPoints(points, markersize=6)
-# # ax.scatter([p.x() for p in points], [p.y()
-# #            for p in points], s=10)
+# vis.drawPoints(points, markersize=6, color='darkblue')
+# ax.scatter([p.x() for p in points], [p.y()
+#            for p in points], s=10)
 # vis.drawPoints(res, color='green', markersize=8)
-# # ax.scatter([p.x() for p in res], [p.y() for p in res], c='green', s=15)
+# ax.scatter([p.x() for p in res], [p.y() for p in res], c='green', s=15)
 
-# plt.show()
+plt.show()
 
 
 # for i in range(6, 7):
@@ -128,6 +135,17 @@ def generateRandomRectangle(left=-1000, right=1000):
     x1, y1 = np.random.uniform(left, right), np.random.uniform(left, right)
     x2, y2 = np.random.uniform(left, right), np.random.uniform(left, right)
     return Rectangle(Point((x1, y1)), Point((x2, y2)))
+
+
+def compareCap(points, capList):
+    for cap in capList:
+        print(f'Capacity: {cap}')
+        buildTime, tree = checkTimeBuild(quadTree, points, cap, False)
+        searchTime, resLen = checkTimeSearch(tree, rect)
+        print(f'budowanie: {round(buildTime,3)}')
+        print(f'szukanie: {round(searchTime,3)}')
+        print(f'ile: {resLen}')
+        print('\n')
 
 
 def compare(pointsList):
@@ -184,4 +202,4 @@ def compareWithTrivial(n=10**5, maxTries=100):
     plt.show()
 
 
-compareWithTrivial(10**4, 80)
+compareCap(points, capList)
