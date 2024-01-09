@@ -36,7 +36,6 @@ class Visualiser():
             [self.currentYLimits[0]-xborder, self.currentYLimits[1]+yborder])
 
     def drawPoints(self, points, color="darkBlue", markersize=7, **kwargs):
-
         if isinstance(points, Point):
             self.setLimits(points)
             point = self.ax.plot(points.x(), points.y(),
@@ -50,6 +49,17 @@ class Visualiser():
                              color=color, marker=".", markersize=markersize)
 
             plt.draw()
+
+    def drawPointsList(self, points: list[Point], color='darkBlue', markersize=7, **kwargs):
+        res = []
+        self.setLimits(points)
+        for point in points:
+            res.append(self.drawPoints(point, color, markersize))
+        return res
+
+    def removePointsList(self, points):
+        for point in points:
+            point.remove()
 
     def drawRectangle(self, rectangle: Rectangle, c='k', lw=1, **kwargs):
         x1, y1 = rectangle.lowerLeft.x(), rectangle.lowerLeft.y()

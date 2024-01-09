@@ -81,16 +81,21 @@ class kdTree:
                 return None
             if l == r:
                 return points[l]
+            pointsVis = vis.drawPointsList(
+                points[l:r+1], color='purple', markersize=9)
+            sleep(vis.interval.get())
             mid = (l+r)//2
             midPoint = quickSelect(points, l, r, mid, dim)
             sleep(vis.interval.get())
-            pointVis = vis.drawPoints(midPoint, color='cyan')
+            pointVis = vis.drawPoints(midPoint, color='cyan', markersize=11)
             sleep(vis.interval.get())
             newNode = kdTreeNode(midPoint.get_dim(
                 dim), dim, rect, points[l:r+1])
             vis.drawLineInRect2D(newNode.rect, newNode.axis, newNode.dim, lw)
             sleep(vis.interval.get())
             pointVis.remove()
+            vis.removePointsList(pointsVis)
+            sleep(vis.interval.get())
             rectLeft, rectRight = rect.divideRectIntoTwo(
                 dim, midPoint.get_dim(dim))
             newNode.left = buildTreeRec(
