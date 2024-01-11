@@ -93,10 +93,12 @@ def generate_cross_points(middle=0, width=100, height=100, n=100,  **kwargs):
 
 capList = [1, 2, 3]
 
-for i in range(30):
-    capList.append(capList[-1]*2)
 
-points = createPointList(generate_uniform_points(-10000, 10000, 10**5))
+points = createPointList(generate_uniform_points(-10000, 10000, 4*10**5))
+
+while len(points) > capList[-1]*4:
+    capList.append(capList[-1]*4)
+
 # ax = plt.subplot()
 # vis = Visualiser(ax)
 
@@ -157,15 +159,17 @@ def compareCap(points, capList):
         sTimes.append(searchTime)
         count.append(resLen)
 
-    ax = plt.subplot()
-    ax.plot([arg for arg in capList], [val for val in bTimes],
-            label='czas budowania', color='darkblue')
+    fig, ax = plt.subplots(2)
+    ax[0].plot([arg for arg in capList], [val for val in bTimes],
+               label='czas budowania', color='darkblue')
 
-    ax.plot([arg for arg in capList], [
+    ax[1].plot([arg for arg in capList], [
         val for val in sTimes], label='czas przeszukiwania', color='purple')
-    plt.xlabel("Capacity")
-    plt.ylabel("Czas [s]")
-    plt.legend()
+    for a in ax.flat:
+        a.set(ylabel='Czas [s]')
+    ax[1].set(xlabel="Capacity")
+    ax[0].legend(loc="upper left")
+    ax[1].legend(loc="upper left")
     plt.show()
 
 
